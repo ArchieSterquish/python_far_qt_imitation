@@ -1,4 +1,4 @@
-#File manager
+# File manager
 Two-panel file manager clone written in python. Doing for myself as small project
 
 # TODO:
