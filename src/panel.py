@@ -34,6 +34,15 @@ class Panel(QListWidget):
             KEY.RIGHT_ARROW,  
         ]
         self.setCurrentRow(0) 
+        self.itemDoubleClicked.connect(self.open_folder)
+
+    def focusInEvent(self, event):
+        self.change_label_signal.emit(self.panel_name)
+        super().focusInEvent(event)
+
+    def focusOutEvent(self, event):
+        self.change_label_signal.emit(self.panel_name)
+        super().focusOutEvent(event)
 
     def update(self):
         files_list = SystemAPI.get_files_list(self.path)
@@ -64,6 +73,14 @@ class Panel(QListWidget):
     def get_current_file_or_folder(self):
         return self.currentItem().text()
 
+    def open_folder(self):
+        temp_path = os.path.join(self.path,self.currentItem().text())
+        if SystemAPI.is_file(temp_path):
+            SystemAPI.open_file_in_editor(temp_path)
+        else: 
+            self.open_directory(self.currentItem().text())
+        pass
+
     def keyPressEvent(self, event):
         if event.key() not in self.list_of_appliable_keys:
             super().keyPressEvent(event)
@@ -85,11 +102,38 @@ class Panel(QListWidget):
             super().keyPressEvent(new_event)
 
         if (event.key() == KEY.ENTER): 
-            temp_path = os.path.join(self.path,self.currentItem().text())
-            if SystemAPI.is_file(temp_path):
-                SystemAPI.open_file_in_editor(temp_path)
-            else: 
-                self.open_directory(self.currentItem().text())
+            self.open_folder()
+
+class PathLabel(QLabel):
+    def __init__(self,text,palette):
+        super().__init__(text)
+        self.palette = palette
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+    def apply_style(self,style):
+        self.setStyleSheet(f"""
+            QLabel {{
+                background-color: {style['bg']};
+                color: {style['text']};
+                border: {style['border']};
+            }}
+        """)
+        self.style().unpolish(self)
+        self.style().polish(self)
+
+    def highlight(self):
+        self.apply_style({  # Standard highlight (theme default)
+            'bg': self.palette.highlight().color().name(),
+            'text': self.palette.highlightedText().color().name(),
+            'border': 'none'
+        })
+
+    def unhighlight(self):
+        self.apply_style({  # No highlight
+            'bg': 'transparent',
+            'text': self.palette.text().color().name(),
+            'border': 'none'
+        })
 
 class PanelsWidget(QWidget):
     def __init__(self):
@@ -99,7 +143,6 @@ class PanelsWidget(QWidget):
     def shorten_path(self,path):
         if len(path) > MAX_VISIBLE_PATH_LENGTH:
             path = "..." + path[len(path) - MAX_VISIBLE_PATH_LENGTH:]
-        #print(path)
         return path
 
     def update_panel(self,panel_name):
@@ -129,39 +172,22 @@ class PanelsWidget(QWidget):
         if (emitted_panel_name == "left panel"):
             path = self.shorten_path(self.left_panel.path)
             self.left_panel_path_label.setText(path)
+            self.left_panel_path_label.highlight()
+            self.right_panel_path_label.unhighlight()
         if (emitted_panel_name == "right panel"):
             path = self.shorten_path(self.right_panel.path)
             self.right_panel_path_label.setText(path)
-
+            self.right_panel_path_label.highlight()
+            self.left_panel_path_label.unhighlight()
+       
     def _init_panels(self):
         layout = QGridLayout()
         # init panels
         self.left_panel  = Panel("left panel", LEFT_PANEL_PATH)
         self.right_panel = Panel("right panel", RIGHT_PANEL_PATH)
-        self.left_panel_path_label = QLabel(self.left_panel.path)
-        self.right_panel_path_label = QLabel(self.right_panel.path)
 
-        # connecting signals for label update
-        self.left_panel.change_label_signal.connect(self.update_label_path)
-        
-
-    def update_label_path(self,emitted_panel_name):
-        """ called when one of the panels changes directory and emits signal"""
-        if (emitted_panel_name == "left panel"):
-            path = self.shorten_path(self.left_panel.path)
-            self.left_panel_path_label.setText(path)
-        if (emitted_panel_name == "right panel"):
-            path = self.shorten_path(self.right_panel.path)
-            self.right_panel_path_label.setText(path)
-
-    def _init_panels(self):
-        layout = QGridLayout()
-        # init panels
-        self.left_panel  = Panel("left panel", LEFT_PANEL_PATH)
-        self.right_panel = Panel("right panel", RIGHT_PANEL_PATH)
-        self.left_panel_path_label = QLabel(self.left_panel.path)
-        self.right_panel_path_label = QLabel(self.right_panel.path)
-
+        self.left_panel_path_label = PathLabel(self.left_panel.path,self.palette())
+        self.right_panel_path_label = PathLabel(self.right_panel.path,self.palette())
         # connecting signals for label update
         self.left_panel.change_label_signal.connect(self.update_label_path)
         self.right_panel.change_label_signal.connect(self.update_label_path)

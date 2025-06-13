@@ -5,6 +5,8 @@ from PyQt6.QtWidgets import(
     QLineEdit
 )
 from PyQt6.QtCore import Qt, pyqtSignal
+from system_api import KEY
+from system_api import SystemAPI
 
 class ConsoleInteractionPanel(QLineEdit):
     def __init__(self,parent):
