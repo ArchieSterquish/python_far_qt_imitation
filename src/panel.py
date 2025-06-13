@@ -76,6 +76,10 @@ class Panel(QListWidget):
         self.change_label_signal.emit(self.panel_name)
         super().focusOutEvent(event)
 
+
+    # TODO:
+    # make so after deletion it goes to next item in the list instead of first one
+    # if no items left just use setCurrentRow(0)
     def update(self):
         self.clear()
 
@@ -100,6 +104,8 @@ class Panel(QListWidget):
 
             item.setForeground(color)  
             self.addItem(item)
+        # workaround to get focus after deletion
+        self.setCurrentRow(0) 
 
     def open_directory(self,new_directory):
         previous_directory = None 

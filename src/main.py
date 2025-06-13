@@ -87,6 +87,12 @@ class MainWindow(QMainWindow):
         #self.showFullScreen()
 
     def keyPressEvent(self, event):
+        # MODIFIERS
+        ALT = Qt.KeyboardModifier.AltModifier 
+        CTRL = Qt.KeyboardModifier.ControlModifier
+        SHIFT = Qt.KeyboardModifier.ShiftModifier
+        NONE = Qt.KeyboardModifier.NoModifier
+
         commands = {
             KEY.F1:  lambda: print('not implemented'),
             KEY.F2:  lambda: print('not implemented'),
@@ -101,10 +107,81 @@ class MainWindow(QMainWindow):
             KEY.F11: lambda: print('not implemented: plugins'), # do I need them?
             KEY.F12: lambda: print('not implemented: screens'), # I don't use them myself, so hard to say
         }
+
+        commands_with_modifiers = {
+            # NO MODIFIERS
+            (NONE,KEY.F1):  lambda: print('not implemented'),
+            (NONE,KEY.F2):  lambda: print('not implemented'),
+            (NONE,KEY.F3):  lambda: print('not implemented'),
+            (NONE,KEY.F4):  lambda: print('not implemented:create and edit file'),
+            (NONE,KEY.F5):  lambda: print('not implemented:copy'),
+            (NONE,KEY.F6):  lambda: print('not implemented:move'),
+            (NONE,KEY.F7):  lambda: self.mainWidget.show_input_dialog(),
+            (NONE,KEY.F8):  lambda: self.mainWidget.show_deletion_dialog(),
+            (NONE,KEY.F9):  lambda: print('not implemented:options'),
+            (NONE,KEY.F10): lambda: self.close(),
+            (NONE,KEY.F11): lambda: print('not implemented: plugins'), # do I need them?
+            (NONE,KEY.F12): lambda: print('not implemented: screens'), # I don't use them myself, so hard to say
+
+            # SINGLE MODIFIERS (ALT)
+            (ALT,KEY.F1):  lambda: print('not implemented'),
+            (ALT,KEY.F2):  lambda: print('not implemented'),
+            (ALT,KEY.F3):  lambda: print('not implemented'),
+            (ALT,KEY.F4):  lambda: print('not implemented:create and edit file'),
+            (ALT,KEY.F5):  lambda: print('not implemented:copy'),
+            (ALT,KEY.F6):  lambda: print('not implemented:move'),
+            (ALT,KEY.F7):  lambda: print('not implemented:move'),
+            (ALT,KEY.F8):  lambda: print('not implemented:move'),
+            (ALT,KEY.F9):  lambda: print('not implemented:options'),
+            (ALT,KEY.F10): lambda: print('not implemented:move'),
+            (ALT,KEY.F11): lambda: print('not implemented: plugins'), # do I need them?
+            (ALT,KEY.F12): lambda: print('not implemented: screens'), # I don't use them myself, so hard to say
+            # SINGLE MODIFIERS (CTRL) mostly responsible for sortin
+            (CTRL,KEY.F1):  lambda: print('not implemented'),
+            (CTRL,KEY.F2):  lambda: print('not implemented'),
+            (CTRL,KEY.F3):  lambda: print('not implemented'),
+            (CTRL,KEY.F4):  lambda: print('not implemented:create and edit file'),
+            (CTRL,KEY.F5):  lambda: print('not implemented:copy'),
+            (CTRL,KEY.F6):  lambda: print('not implemented:move'),
+            (CTRL,KEY.F7):  lambda: print('not implemented:options'),
+            (CTRL,KEY.F8):  lambda: print('not implemented:options'),
+            (CTRL,KEY.F9):  lambda: print('not implemented:options'),
+            (CTRL,KEY.F10): lambda: print('not implemented:options'),
+            (CTRL,KEY.F11): lambda: print('not implemented: plugins'), # do I need them?
+            (CTRL,KEY.F12): lambda: print('not implemented: screens'), # I don't use them myself, so hard to say
+            # SINGLE MODIFIERS (SHIFT)
+            (SHIFT,KEY.F1):  lambda: print('not implemented'),
+            (SHIFT,KEY.F2):  lambda: print('not implemented'),
+            (SHIFT,KEY.F3):  lambda: print('not implemented'),
+            (SHIFT,KEY.F4):  lambda: print('not implemented:create and edit file'),
+            (SHIFT,KEY.F5):  lambda: print('not implemented:copy'),
+            (SHIFT,KEY.F6):  lambda: print('not implemented:move'),
+            (SHIFT,KEY.F7):  lambda: print('not implemented:options'),
+            (SHIFT,KEY.F8):  lambda: print('not implemented:options'),
+            (SHIFT,KEY.F9):  lambda: print('not implemented:options'),
+            (SHIFT,KEY.F10): lambda: print('not implemented:options'),
+            (SHIFT,KEY.F11): lambda: print('not implemented: plugins'), # do I need them?
+            (SHIFT,KEY.F12): lambda: print('not implemented: screens'), # I don't use them myself, so hard to say
+        }
+
+        modifier = event.modifiers()
+        key = event.key()
+        #print(event.key())
+
         try:
-            commands[event.key()]()
+            if (modifier, key) in commands_with_modifiers:                
+                print(f'here {modifier}:{key}')
+                commands_with_modifiers[(modifier,key)]()
+            #if modifiers == NONE: # so we didn't press alt shift ctrl
+            #    commands[key]()
+            #elif modifiers == CTRL: # only pressed ctrl
+            #    print("CTRL is pressed")
+            #elif modifiers == ALT: # only pressed ctrl
+            #    print("ALT is pressed")
+            #elif modifiers == SHIFT: # only pressed ctrl
+            #    if key == KEY.F4:
+            #        print("SHIFT + F4 is pressed")
         except:
-            print('not implemented')
             pass
 
     def closeEvent(self, event):
