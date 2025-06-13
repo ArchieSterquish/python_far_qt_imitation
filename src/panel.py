@@ -86,6 +86,10 @@ class Panel(QListWidget):
         files_list = SystemAPI.get_ff_list(self.path)
         directories_list = SystemAPI.get_directories_list(self.path)
 
+        # FIXME - Move in init_function to know that these fields exists
+        self.files_list = files_list
+        self.directories_list = directories_list 
+
         for d in directories_list:
             item = QListWidgetItem(d)
             item.setForeground(COLOR_FOLDER)  
@@ -112,15 +116,19 @@ class Panel(QListWidget):
         previous_directory_name = None 
 
         if new_directory != '..':            
-            self.path = os.path.join(self.path,new_directory)
+            #self.path = os.path.join(self.path,new_directory)
+            self.path = SystemAPI.join(self.path,new_directory)
         else:
-            previous_directory = os.path.dirname(self.path)
-            previous_directory_name = os.path.basename(self.path)
+            #previous_directory = os.path.dirname(self.path)
+            #previous_directory_name = os.path.basename(self.path)
+
+            previous_directory = SystemAPI.dirname(self.path) 
+            previous_directory_name = SystemAPI.basename(self.path)
             self.path = previous_directory 
     
         self.update()
+        files_list = self.directories_list # bad possible optimization process
 
-        files_list = SystemAPI.get_files_list(self.path)
         if previous_directory_name != None: # meaning we're going backwards
             last_position = files_list.index(previous_directory_name)
             self.setCurrentRow(last_position)
@@ -132,7 +140,8 @@ class Panel(QListWidget):
         return self.currentItem().text()
 
     def open_folder(self):
-        temp_path = os.path.join(self.path,self.currentItem().text())
+        #temp_path = os.path.join(self.path,self.currentItem().text())
+        temp_path = SystemAPI.join(self.path,self.currentItem().text())
         if SystemAPI.is_file(temp_path):
             SystemAPI.open_file_in_editor(temp_path)
         else: 
@@ -212,9 +221,11 @@ class PanelsWidget(QWidget):
     def get_focused_file_or_folder(self):
         path,focused_panel = self.get_focused_panel_path()
         if (focused_panel == "left panel"):
-            return os.path.join(path,self.left_panel.get_current_file_or_folder())
+            return SystemAPI.join(path,self.left_panel.get_current_file_or_folder())
+            #return os.path.join(path,self.left_panel.get_current_file_or_folder())
         if (focused_panel == "right panel"):
-            return os.path.join(path,self.right_panel.get_current_file_or_folder())
+            #return os.path.join(path,self.right_panel.get_current_file_or_folder())
+            return SystemAPI.join(path,self.right_panel.get_current_file_or_folder())
 
     def get_focused_panel_path(self):
         if self.left_panel.hasFocus():

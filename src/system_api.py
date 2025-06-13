@@ -10,13 +10,21 @@ class SystemAPI:
             do_sort = True,
             show_hidden = False):
         all_items = os.listdir(path)
+        return list(os.listdir(path)) # DEBUG OPTION
 
-        if not show_hidden:            
-            directories = [item for item in all_items if os.path.isdir(os.path.join(path, item)) and not item.startswith(".")]
-            files       = [item for item in all_items if not os.path.isdir(os.path.join(path, item)) and not item.startswith(".")]
+        directories = []
+        files = []
+
+        if not show_hidden:
+            check_condition = lambda item: os.path.isdir(os.path.join(path,item)) and not item.startswith(".") 
         else:
-            directories = [item for item in all_items if os.path.isdir(os.path.join(path, item))]
-            files       = [item for item in all_items if not os.path.isdir(os.path.join(path, item))]
+            check_condition = lambda item: os.path.isdir(os.path.join(path,item)) 
+
+        for item in all_items:
+            if check_condition(item): 
+                directories.append(item)
+            else:
+                files.append(item)
         
         # to get files in order
         if do_sort:
@@ -55,8 +63,6 @@ class SystemAPI:
             directories = [item for item in all_items if os.path.isdir(os.path.join(path, item)) and not item.startswith(".")]
         else:
             directories = [item for item in all_items if os.path.isdir(os.path.join(path, item))]
-        if do_sort:
-            directories.sort()
 
         # to get files in order
         if do_sort:
@@ -68,6 +74,12 @@ class SystemAPI:
 
     def basename(path):
         return os.path.basename(path)
+
+    def dirname(path):
+        return os.path.dirname(path)
+
+    def join(path,additional_dir):
+        return os.path.join(path,additional_dir)
 
     def remove_file_or_directory(path):
         try:

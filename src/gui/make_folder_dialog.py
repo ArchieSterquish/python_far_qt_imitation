@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import(
     QDialog,
 )
 
-from error_dialog import ErrorDialog
+from gui.error_dialog import ErrorDialog
 
 class MakeFolderDialog(QDialog):
     def __init__(self, parent=None):
