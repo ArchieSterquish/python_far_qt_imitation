@@ -8,7 +8,7 @@ from PyQt6.QtCore import Qt, pyqtSignal
 
 class ConsoleInteractionPanel(QLineEdit):
     def __init__(self,parent):
-        initial_message = "HELLO BITCHES"
+        initial_message = "~%some user>"
         super().__init__(initial_message,parent = parent)
         self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
 
