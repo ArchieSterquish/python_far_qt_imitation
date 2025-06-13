@@ -3,8 +3,8 @@ Two-panel file manager clone written in python. Doing for myself as small projec
 
 # TODO:
   Panels:
-  - [ ] Add highlighting for folders/files
-    - [ ] Add option to configure color for different set of files
+  - [x] Add highlighting for folders/files
+    - [x] Add option to configure color for different set of files (partially done needs another dialog window to configure it)
   - [ ] Add ability to select multiple files
   - [ ] Add ability to hide one or both panels with Ctrl+O or Ctrl+P shortcut
   - [ ] Add info at the bottom of panel:
