@@ -30,6 +30,42 @@ class SystemAPI:
 
         return list_dir
 
+    def get_ff_list(
+            path="~/",
+            do_sort = True,
+            show_hidden = False):
+        all_items = os.listdir(path)
+
+        if not show_hidden:            
+            files = [item for item in all_items if not os.path.isdir(os.path.join(path, item)) and not item.startswith(".")]
+        else:
+            files = [item for item in all_items if not os.path.isdir(os.path.join(path, item))]
+        
+        if do_sort:
+            files.sort()
+
+        return files
+
+    def get_directories_list( 
+            path="~/",
+            do_sort = True,
+            show_hidden = False):
+        all_items = os.listdir(path)
+        if not show_hidden:            
+            directories = [item for item in all_items if os.path.isdir(os.path.join(path, item)) and not item.startswith(".")]
+        else:
+            directories = [item for item in all_items if os.path.isdir(os.path.join(path, item))]
+        if do_sort:
+            directories.sort()
+
+        # to get files in order
+        if do_sort:
+            directories.sort()
+
+        if (path != "/"):  # root directory so we don't add .. 
+            directories = ['..'] + directories
+        return directories
+
     def basename(path):
         return os.path.basename(path)
 

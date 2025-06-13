@@ -1,8 +1,6 @@
-#from system_api import SystemAPI
-#from system_api import KEY
-
 from PyQt6.QtWidgets import(
     QListWidget,
+    QListWidgetItem,
     QWidget,
     QGridLayout,
     QLabel
@@ -12,12 +10,47 @@ import os
 import re
 from system_api import KEY
 from system_api import SystemAPI
-
+from PyQt6.QtGui import QColor, QBrush
 # set with mind that settings are stored in some sort of file
 LEFT_PANEL_PATH  = os.path.expanduser("~")
 RIGHT_PANEL_PATH = os.path.expanduser("~")
 
 MAX_VISIBLE_PATH_LENGTH = 100
+
+COLOR_FOLDER = QBrush(QColor(255,165,0))
+COLOR_FILE = QBrush(QColor(255,255,255))
+
+COLOR_EXTENSIONS ={
+    # Folders
+    "folder": QBrush(QColor(255, 165, 0)),  # Orange
+    
+    # Programming files
+    ".py": QBrush(QColor(65, 105, 225)),    # Royal Blue (Python)
+    ".cpp": QBrush(QColor(100, 149, 237)),  # Cornflower Blue (C++)
+    ".js": QBrush(QColor(240, 219, 79)),    # Yellow (JavaScript)
+    ".html": QBrush(QColor(227, 79, 56)),   # Red-Orange (HTML)
+    ".css": QBrush(QColor(86, 61, 124)),    # Purple (CSS)
+    
+    # Documents
+    ".pdf": QBrush(QColor(220, 20, 60)),    # Crimson (PDF)
+    ".docx": QBrush(QColor(0, 100, 0)),     # Dark Green (Word)
+    ".doc": QBrush(QColor(0, 100, 0)),     # Dark Green (Word)
+    ".xlsx": QBrush(QColor(0, 128, 0)),     # Green (Excel)
+    
+    # Media
+    ".jpg": QBrush(QColor(218, 165, 32)),   # Goldenrod (Images)
+    ".mp3": QBrush(QColor(138, 43, 226)),   # Blue Violet (Audio)
+    ".mp4": QBrush(QColor(219, 112, 147)), # Pale Violet Red (Video)
+
+    # archives
+    ".7z": QBrush(QColor(255,0,255)), # magenta
+    ".zip": QBrush(QColor(255,0,255)), # magenta
+    ".tar": QBrush(QColor(255,0,255)), # magenta
+    ".rar": QBrush(QColor(255,0,255)), # magenta
+    
+    # Default file color
+    "_default": QBrush(QColor(200, 200, 200))  # Light Gray
+}
 
 class Panel(QListWidget):
     change_label_signal = pyqtSignal(str)
@@ -25,8 +58,7 @@ class Panel(QListWidget):
         super().__init__()
         self.panel_name = panel_name
         self.path = path
-        self.addItems(SystemAPI.get_files_list(self.path))
-        self.is_active_panel = False
+        self.update()
 
         self.list_of_appliable_keys = [
             KEY.ENTER,
@@ -45,9 +77,29 @@ class Panel(QListWidget):
         super().focusOutEvent(event)
 
     def update(self):
-        files_list = SystemAPI.get_files_list(self.path)
         self.clear()
-        self.addItems(files_list)
+
+        files_list = SystemAPI.get_ff_list(self.path)
+        directories_list = SystemAPI.get_directories_list(self.path)
+
+        for d in directories_list:
+            item = QListWidgetItem(d)
+            item.setForeground(COLOR_FOLDER)  
+            self.addItem(item)
+        for f in files_list:
+            item = QListWidgetItem(f)
+            color = None
+            for ext in sorted(COLOR_EXTENSIONS.keys(), key=len, reverse=True):
+                if f.lower().endswith(ext.lower()):
+                    color = COLOR_EXTENSIONS[ext]
+                    break
+            
+            # Use default if no match found
+            if color is None:
+                color = COLOR_EXTENSIONS["_default"]
+
+            item.setForeground(color)  
+            self.addItem(item)
 
     def open_directory(self,new_directory):
         previous_directory = None 
