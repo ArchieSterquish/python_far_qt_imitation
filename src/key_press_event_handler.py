@@ -1,8 +1,8 @@
 from system_api import KEY
 from PyQt6.QtCore import Qt
 
-from gui.make_folder_dialog import MakeFolderDialog
-from gui.error_dialog import ErrorDialog
+#from gui.make_folder_dialog import MakeFolderDialog
+#from gui.error_dialog import ErrorDialog
 
 ALT = Qt.KeyboardModifier.AltModifier 
 CTRL = Qt.KeyboardModifier.ControlModifier
@@ -10,15 +10,16 @@ SHIFT = Qt.KeyboardModifier.ShiftModifier
 NONE = Qt.KeyboardModifier.NoModifier
 
 class KeyHandler:
-    def handle_key(main_app,event):
+    def handle_key(event):
         modifier = event.modifiers()
         key = event.key()
 
         try:
             if (modifier, key) in KeyHandler.commands:                
-                KeyHandler.commands[(modifier,key)](main_app)
+                return KeyHandler.commands[(modifier,key)]
         except:
-            pass
+            return lambda _: None
+        return lambda _: None
 
     commands = {
             # NO MODIFIERS

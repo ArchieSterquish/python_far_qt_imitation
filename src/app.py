@@ -20,8 +20,10 @@ from system_api import KEY
 
 import sys
 # custom modules
-from gui.error_dialog import ErrorDialog
-from gui.make_folder_dialog import MakeFolderDialog
+#from gui.error_dialog import ErrorDialog
+#from gui.make_folder_dialog import MakeFolderDialog
+from gui import ErrorDialog
+from gui import MakeFolderDialog
 from console_interaction_panel import ConsoleInteractionPanel  
 from panel import PanelsWidget
 import key_press_event_handler as KeyPressEventHandler
@@ -67,8 +69,11 @@ class MainWidget(QWidget):
         dialog = MakeFolderDialog(self)  # Passing `self` as parent
         dialog.exec()  # Blocking call
         
-        if dialog.user_input is not None:
-            print(focused_path,dialog.user_input)
+        # TODO:
+        # add multiple_spaces check
+        # add check for space in the beginnig
+        if dialog.user_input not in ["",None]:
+            print(f'user input: {dialog.user_input}')
             result = SystemAPI.make_directory(focused_path,dialog.user_input)
             if result != None:
                 ErrorDialog(self,result)
@@ -91,7 +96,7 @@ class MainWindow(QMainWindow):
     def keyPressEvent(self,event):
         #if (event.key() == KEY.F7):
         #    self.mainWidget.show_input_dialog()
-        KeyPressEventHandler.KeyHandler.handle_key(self,event)
+        KeyPressEventHandler.KeyHandler.handle_key(event)(self)
 
     def closeEvent(self, event):
        
