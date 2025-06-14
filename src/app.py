@@ -18,12 +18,16 @@ from PyQt6.QtGui import QIcon
 import sys
 
 # custom modules
-from console_interaction_panel import ConsoleInteractionPanel  
-from panel import PanelsWidget
-import key_press_event_handler as KeyPressEventHandler
+#from panel import PanelsWidget
+from event_handler import KeyHandler
 
+from gui import ConsoleInteractionPanel  
 from gui import ErrorDialog
 from gui import MakeFolderDialog
+from gui import PanelsWidget
+
+from gui import ButtonsBar
+
 from system_api import SystemAPI
 from system_api import KEY
 
@@ -32,10 +36,12 @@ class MainWidget(QWidget):
         super().__init__()
         self.widget_1 = PanelsWidget()
         self.widget_2 = ConsoleInteractionPanel(self)
+        self.widget_3 = ButtonsBar()
 
         layout = QGridLayout()
         layout.addWidget(self.widget_1)
         layout.addWidget(self.widget_2)
+        layout.addWidget(self.widget_3)
         self.setLayout(layout)
 
     def get_focused_panel_path(self):
@@ -92,7 +98,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.mainWidget)
 
     def keyPressEvent(self,event):
-        KeyPressEventHandler.KeyHandler.handle_key(event)(self)
+        KeyHandler.handle_key(event)(self)
 
     def closeEvent(self, event):
         reply = QMessageBox.question(self, 

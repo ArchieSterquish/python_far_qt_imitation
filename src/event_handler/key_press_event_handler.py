@@ -1,5 +1,6 @@
 from system_api import KEY
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QKeyEvent
 
 ALT = Qt.KeyboardModifier.AltModifier 
 CTRL = Qt.KeyboardModifier.ControlModifier
@@ -7,7 +8,7 @@ SHIFT = Qt.KeyboardModifier.ShiftModifier
 NONE = Qt.KeyboardModifier.NoModifier
 
 class KeyHandler:
-    def handle_key(event):
+    def handle_key(event: QKeyEvent):
         modifier = event.modifiers()
         key = event.key()
 
