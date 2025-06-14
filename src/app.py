@@ -14,19 +14,18 @@ from PyQt6.QtWidgets import(
     QLabel
 )
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QIcon  # Optional: For custom icons
-from system_api import SystemAPI
-from system_api import KEY
-
+from PyQt6.QtGui import QIcon  
 import sys
+
 # custom modules
-#from gui.error_dialog import ErrorDialog
-#from gui.make_folder_dialog import MakeFolderDialog
-from gui import ErrorDialog
-from gui import MakeFolderDialog
 from console_interaction_panel import ConsoleInteractionPanel  
 from panel import PanelsWidget
 import key_press_event_handler as KeyPressEventHandler
+
+from gui import ErrorDialog
+from gui import MakeFolderDialog
+from system_api import SystemAPI
+from system_api import KEY
 
 class MainWidget(QWidget):
     def __init__(self):
@@ -66,8 +65,8 @@ class MainWidget(QWidget):
         """Create and show the input dialog."""
         focused_path,focused_panel = self.get_focused_panel_path()
 
-        dialog = MakeFolderDialog(self)  # Passing `self` as parent
-        dialog.exec()  # Blocking call
+        dialog = MakeFolderDialog(self)  
+        dialog.exec()  
         
         # TODO:
         # add multiple_spaces check
@@ -79,7 +78,6 @@ class MainWidget(QWidget):
                 ErrorDialog(self,result)
                 return
             self.update_panel(focused_panel)
-
 
 class MainWindow(QMainWindow):
     def __init__(self):        
@@ -94,12 +92,9 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.mainWidget)
 
     def keyPressEvent(self,event):
-        #if (event.key() == KEY.F7):
-        #    self.mainWidget.show_input_dialog()
         KeyPressEventHandler.KeyHandler.handle_key(event)(self)
 
     def closeEvent(self, event):
-       
         reply = QMessageBox.question(self, 
                 'Close Confirmation', 
                 'Are you sure you want to exit?',
@@ -107,9 +102,9 @@ class MainWindow(QMainWindow):
                 QMessageBox.StandardButton.Yes
         )
         if reply == QMessageBox.StandardButton.Yes: 
-            event.accept()  # Accept the close event, closing the window
+            event.accept()  
         else:
-            event.ignore()  # Ignore the close event, keeping the window open
+            event.ignore() 
 
 def main():
     app = QApplication(sys.argv)

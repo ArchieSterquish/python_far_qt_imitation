@@ -1,6 +1,3 @@
-#from system_api import SystemAPI
-#from system_api import KEY
-
 from PyQt6.QtWidgets import(
     QLineEdit
 )

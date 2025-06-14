@@ -1,9 +1,6 @@
 from system_api import KEY
 from PyQt6.QtCore import Qt
 
-#from gui.make_folder_dialog import MakeFolderDialog
-#from gui.error_dialog import ErrorDialog
-
 ALT = Qt.KeyboardModifier.AltModifier 
 CTRL = Qt.KeyboardModifier.ControlModifier
 SHIFT = Qt.KeyboardModifier.ShiftModifier

@@ -22,34 +22,33 @@ COLOR_FILE = QBrush(QColor(255,255,255))
 
 COLOR_EXTENSIONS ={
     # Folders
-    "folder": QBrush(QColor(255, 165, 0)),  # Orange
+    "folder": QBrush(QColor(255, 165, 0)),  
     
-    # Programming files
-    ".py": QBrush(QColor(65, 105, 225)),    # Royal Blue (Python)
-    ".cpp": QBrush(QColor(100, 149, 237)),  # Cornflower Blue (C++)
-    ".js": QBrush(QColor(240, 219, 79)),    # Yellow (JavaScript)
-    ".html": QBrush(QColor(227, 79, 56)),   # Red-Orange (HTML)
-    ".css": QBrush(QColor(86, 61, 124)),    # Purple (CSS)
+    ".py":   QBrush(QColor(65, 105, 225)),    
+    ".cpp":  QBrush(QColor(100, 149, 237)),  
+    ".js":   QBrush(QColor(240, 219, 79)),    
+    ".html": QBrush(QColor(227, 79, 56)),   
+    ".css":  QBrush(QColor(86, 61, 124)),    
     
     # Documents
-    ".pdf": QBrush(QColor(220, 20, 60)),    # Crimson (PDF)
-    ".docx": QBrush(QColor(0, 100, 0)),     # Dark Green (Word)
-    ".doc": QBrush(QColor(0, 100, 0)),     # Dark Green (Word)
-    ".xlsx": QBrush(QColor(0, 128, 0)),     # Green (Excel)
+    ".pdf":  QBrush(QColor(220, 20, 60)),    
+    ".docx": QBrush(QColor(0, 100, 0)),     
+    ".doc":  QBrush(QColor(0, 100, 0)),     
+    ".xlsx": QBrush(QColor(0, 128, 0)),     
     
     # Media
-    ".jpg": QBrush(QColor(218, 165, 32)),   # Goldenrod (Images)
-    ".mp3": QBrush(QColor(138, 43, 226)),   # Blue Violet (Audio)
-    ".mp4": QBrush(QColor(219, 112, 147)), # Pale Violet Red (Video)
+    ".jpg": QBrush(QColor(218, 165, 32)),   
+    ".mp3": QBrush(QColor(138, 43, 226)),   
+    ".mp4": QBrush(QColor(219, 112, 147)), 
 
     # archives
-    ".7z": QBrush(QColor(255,0,255)), # magenta
-    ".zip": QBrush(QColor(255,0,255)), # magenta
-    ".tar": QBrush(QColor(255,0,255)), # magenta
-    ".rar": QBrush(QColor(255,0,255)), # magenta
+    ".7z":  QBrush(QColor(255,0,255)), 
+    ".zip": QBrush(QColor(255,0,255)), 
+    ".tar": QBrush(QColor(255,0,255)), 
+    ".rar": QBrush(QColor(255,0,255)), 
     
     # Default file color
-    "_default": QBrush(QColor(200, 200, 200))  # Light Gray
+    "_default": QBrush(QColor(200, 200, 200))  
 }
 
 class Panel(QListWidget):
@@ -75,7 +74,6 @@ class Panel(QListWidget):
     def focusOutEvent(self, event):
         self.change_label_signal.emit(self.panel_name)
         super().focusOutEvent(event)
-
 
     # TODO:
     # make so after deletion it goes to next item in the list instead of first one
@@ -116,12 +114,8 @@ class Panel(QListWidget):
         previous_directory_name = None 
 
         if new_directory != '..':            
-            #self.path = os.path.join(self.path,new_directory)
             self.path = SystemAPI.join(self.path,new_directory)
         else:
-            #previous_directory = os.path.dirname(self.path)
-            #previous_directory_name = os.path.basename(self.path)
-
             previous_directory = SystemAPI.dirname(self.path) 
             previous_directory_name = SystemAPI.basename(self.path)
             self.path = previous_directory 
@@ -140,7 +134,6 @@ class Panel(QListWidget):
         return self.currentItem().text()
 
     def open_folder(self):
-        #temp_path = os.path.join(self.path,self.currentItem().text())
         temp_path = SystemAPI.join(self.path,self.currentItem().text())
         if SystemAPI.is_file(temp_path):
             SystemAPI.open_file_in_editor(temp_path)
@@ -155,14 +148,13 @@ class Panel(QListWidget):
         if not self.currentItem(): # if no items means we aren't focused or something else
             return
 
+        # Change Left and Right arrow keys to PageUp and PageDown keys
         if event.key() == Qt.Key.Key_Left:
-            # Create a new event for Page Up
             new_event = type(event)(event.type(), 
                                   Qt.Key.Key_PageUp,
                                   event.modifiers())
             super().keyPressEvent(new_event)
         elif event.key() == Qt.Key.Key_Right:
-            # Create a new event for Page Down
             new_event = type(event)(event.type(),
                                   Qt.Key.Key_PageDown,
                                   event.modifiers())
@@ -189,14 +181,14 @@ class PathLabel(QLabel):
         self.style().polish(self)
 
     def highlight(self):
-        self.apply_style({  # Standard highlight (theme default)
+        self.apply_style({  
             'bg': self.palette.highlight().color().name(),
             'text': self.palette.highlightedText().color().name(),
             'border': 'none'
         })
 
     def unhighlight(self):
-        self.apply_style({  # No highlight
+        self.apply_style({  
             'bg': 'transparent',
             'text': self.palette.text().color().name(),
             'border': 'none'
@@ -222,9 +214,7 @@ class PanelsWidget(QWidget):
         path,focused_panel = self.get_focused_panel_path()
         if (focused_panel == "left panel"):
             return SystemAPI.join(path,self.left_panel.get_current_file_or_folder())
-            #return os.path.join(path,self.left_panel.get_current_file_or_folder())
         if (focused_panel == "right panel"):
-            #return os.path.join(path,self.right_panel.get_current_file_or_folder())
             return SystemAPI.join(path,self.right_panel.get_current_file_or_folder())
 
     def get_focused_panel_path(self):
@@ -262,9 +252,9 @@ class PanelsWidget(QWidget):
         self.right_panel.change_label_signal.connect(self.update_label_path)
         
         # widgets placement
-        layout.addWidget(self.left_panel_path_label, 0, 0)  # Row 0, Column 0
-        layout.addWidget(self.right_panel_path_label, 0, 1)  # Row 0, Column 1
+        layout.addWidget(self.left_panel_path_label, 0, 0)  
+        layout.addWidget(self.right_panel_path_label, 0, 1)  
 
-        layout.addWidget(self.left_panel, 1, 0)  # Row 0, Column 0
-        layout.addWidget(self.right_panel, 1, 1)  # Row 0, Column 1
+        layout.addWidget(self.left_panel, 1, 0)  
+        layout.addWidget(self.right_panel, 1, 1)  
         self.setLayout(layout)
