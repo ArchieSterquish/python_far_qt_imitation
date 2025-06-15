@@ -19,6 +19,9 @@ LEFT_PANEL_PATH  = os.path.expanduser("~")
 RIGHT_PANEL_PATH = os.path.expanduser("~")
 
 MAX_VISIBLE_PATH_LENGTH = 100
+
+# TODO:
+#   make so panel doesn't lose focus when bottom bar button is pressed
 class PanelsWidget(QWidget):
     def __init__(self):
         super().__init__()
