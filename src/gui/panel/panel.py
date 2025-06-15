@@ -46,7 +46,7 @@ class Panel(QListWidget):
 
         for d in directories_list:
             item = QListWidgetItem(d)
-            item.setForeground(COLOR_FOLDER)  
+            item.setForeground(COLOR_EXTENSIONS["folder"])  
             self.addItem(item)
         for f in files_list:
             item = QListWidgetItem(f)

@@ -5,10 +5,14 @@ from PyQt6.QtWidgets import(
     QListWidget,
     QVBoxLayout,
     QDialog,
+    QGridLayout,
+    QWidget
 )
 
 from .error_dialog import ErrorDialog
-
+# TODO:
+#   1. Change button placement from vertical to horizontal
+#   2. Add ability to shift focus from input field to buttons 
 class MakeFolderDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -29,6 +33,7 @@ class MakeFolderDialog(QDialog):
         layout.addWidget(self.input_field)
         layout.addWidget(self.ok_button)
         layout.addWidget(self.cancel_button)
+
         self.setLayout(layout)
         
         # Signals (button clicks)

@@ -33,4 +33,3 @@ COLOR_EXTENSIONS ={
     # Default file color
     "_default": QBrush(QColor(200, 200, 200))  
 }
-
