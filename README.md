@@ -2,6 +2,8 @@
 Two-panel file manager clone written in python. Doing for myself as small project
 
 # TODO:
+  Project structure:
+  - [ ] Restructurize to fit MVC model
   Panels:
   - [x] Add highlighting for folders/files
     - [x] Add option to configure color for different set of files (partially done needs another dialog window to configure it)
@@ -19,3 +21,8 @@ Two-panel file manager clone written in python. Doing for myself as small projec
     - [ ] Add ability to bulk rename files by using template
     - [ ] Add ability to bulk rename files by passing list of selected files and passing it to editor       
   - [ ] Audio music player: play any music in app itself
+# FIX:
+  Buttons bar:
+  - [ ] - (Do it after restructurization) add buttons functionality
+  - [ ] - (Do it after restructurization) buttons can't change text even when they're focused
+

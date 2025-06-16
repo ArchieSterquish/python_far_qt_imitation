@@ -7,6 +7,7 @@ CTRL = Qt.KeyboardModifier.ControlModifier
 SHIFT = Qt.KeyboardModifier.ShiftModifier
 NONE = Qt.KeyboardModifier.NoModifier
 
+
 class KeyHandler:
     def handle_key(event: QKeyEvent):
         modifier = event.modifiers()

@@ -23,6 +23,10 @@ class Panel(QListWidget):
         self.setCurrentRow(0) 
         self.itemDoubleClicked.connect(self.open_folder)
 
+        # Hiding scrollbars
+        self.verticalScrollBar().setStyleSheet("QScrollBar {width:0px;}")
+        self.horizontalScrollBar().setStyleSheet("QScrollBar {height:0px;}")
+
     def focusInEvent(self, event):
         self.change_label_signal.emit(self.panel_name)
         super().focusInEvent(event)

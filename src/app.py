@@ -114,6 +114,7 @@ class MainWindow(QMainWindow):
 
 def main():
     app = QApplication(sys.argv)
+    app.setStyle("fusion") # temp dark mode replacement (IT'S ACTUALLY PERMANENT >:D)
     window = MainWindow()
     window.show()
     app.exec()
