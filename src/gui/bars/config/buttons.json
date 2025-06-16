@@ -1,5 +1,5 @@
 {
-    "DEFAULT":   ["Help","UserMn","View","Edit","Copy","RenMov","MkFold","Delete","ConfMn","Quit","Plugin","Screen"],
+    "NONE":   ["Help","UserMn","View","Edit","Copy","RenMov","MkFold","Delete","ConfMn","Quit","Plugin","Screen"],
     "SHIFT":     ["Add","Extract","ArcCmd","Edit...","Copy","Rename","BLANK","Delete","Save","Last","Group","SelUp"],
     "CTRL":      ["Left","Right","Name","Extens","Write","Size","Unsort","Creatn","Access","Descr","Owner","Sort"],
     "ALT":       ["Left","Right","View...","Edit...","Print","MkLink","Find","Histry","Video","Tree","ViewHs","FoldHs"]

@@ -14,7 +14,7 @@ from PyQt6.QtWidgets import(
     QLabel
 )
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QIcon  
+from PyQt6.QtGui import QIcon,QCloseEvent
 import sys
 
 # custom modules
@@ -32,6 +32,7 @@ from system_api import SystemAPI
 from system_api import KEY
 
 class MainWidget(QWidget):
+    close_app_signal = pyqtSignal(str)
     def __init__(self):
         super().__init__()
         self.widget_1 = PanelsWidget()
@@ -43,6 +44,9 @@ class MainWidget(QWidget):
         layout.addWidget(self.widget_2)
         layout.addWidget(self.widget_3)
         self.setLayout(layout)
+
+    def update_buttons_text(self,text):
+        self.widget_3.update_buttons_text(text)
 
     def get_focused_panel_path(self):
         return self.widget_1.get_focused_panel_path()
@@ -68,7 +72,6 @@ class MainWidget(QWidget):
             self.update_panel(focused_panel)
 
     def show_input_dialog(self):
-        """Create and show the input dialog."""
         focused_path,focused_panel = self.get_focused_panel_path()
 
         dialog = MakeFolderDialog(self)  
@@ -85,6 +88,10 @@ class MainWidget(QWidget):
                 return
             self.update_panel(focused_panel)
 
+    def closeEvent(self,event):
+        self.close_app_signal.emit("")
+        event.ignore()
+
 class MainWindow(QMainWindow):
     def __init__(self):        
         super().__init__()
@@ -95,10 +102,19 @@ class MainWindow(QMainWindow):
         self.setMinimumWidth(width)
         self.setMinimumHeight(height)
         self.mainWidget = MainWidget()
+        self.mainWidget.close_app_signal.connect(self.closeEventFromWidget)
         self.setCentralWidget(self.mainWidget)
 
     def keyPressEvent(self,event):
-        KeyHandler.handle_key(event)(self)
+        #KeyHandler.handle_key_press(event)(self)
+        KeyHandler.handle_key_press(event)(self.mainWidget)
+
+    def keyReleaseEvent(self,event):
+        #KeyHandler.handle_key_release(event)(self)
+        KeyHandler.handle_key_release(event)(self.mainWidget)
+
+    def closeEventFromWidget(self,event):
+        self.close()
 
     def closeEvent(self, event):
         reply = QMessageBox.question(self, 

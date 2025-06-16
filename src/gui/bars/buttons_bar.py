@@ -12,9 +12,17 @@ import json
 
 #from system_api import KEY
 
+
+import os
+
+
+if os.name == "nt": # WINDOWS
+    TEMP_PATH_SOLUTION = os.path.join('gui','bars','config','buttons.json') 
+if os.name == "posix": # LINUX
+    TEMP_PATH_SOLUTION = os.path.join(os.path.dirname(os.path.realpath(__file__)),'config','buttons.json')
 # Loading config for buttons
-TEMP_PATH_SOLUTION = r'gui\bars\config\buttons.json'
 with open(TEMP_PATH_SOLUTION) as f:
+    print(TEMP_PATH_SOLUTION)
     CONFIG_BUTTONS = json.load(f)
 
 # TODO:
@@ -43,7 +51,7 @@ class ButtonsBar(QWidget):
         super().keyPressEvent(event)
 
     def keyReleaseEvent(self,event):
-        self.update_buttons_text("DEFAULT")
+        self.update_buttons_text("NONE")
         super().keyPressEvent(event)
 
     def create_numbered_button(self,index,button):
@@ -62,7 +70,7 @@ class ButtonsBar(QWidget):
         return widget
 
     def _init_buttons(self):
-        self.buttons = [QPushButton(parent=self,text=button) for button in CONFIG_BUTTONS['DEFAULT']]
+        self.buttons = [QPushButton(parent=self,text=button) for button in CONFIG_BUTTONS["NONE"]]
         for button in self.buttons:
             button.setFocusPolicy(Qt.FocusPolicy.ClickFocus) # so that it doesn't focus on these buttons
 
