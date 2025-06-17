@@ -1,0 +1,6 @@
+{
+    "NONE":      ["Help","Save","BLANK","Quit","ShwSpc","View","Search","->ANSI","Config","Quit","Plugin","Screen"],
+    "SHIFT":     ["BLANK","SaveAs","BLANK","Edit...","TabWdt","BLANK","Next","CodePg","BLANK","SaveQ","BLANK","BLANK"],
+    "CTRL":      ["BLANK","BLANK","BLANK","BLANK","Spaces","BLANK","Replac","BLANK","BLANK","GoFile","BLANK","BLANK"],
+    "ALT":       ["BLANK","BLANK","BLANK","BLANK","Print","BLANK","Prev","Goto","Video","ExitFar","ViewHs","BLANK"]
+}

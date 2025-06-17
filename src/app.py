@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import(
     QDialog,
     QVBoxLayout,
     QTextEdit,
+    QStackedWidget,
     QLabel
 )
 from PyQt6.QtCore import Qt, pyqtSignal
@@ -18,100 +19,57 @@ from PyQt6.QtGui import QIcon,QCloseEvent
 import sys
 
 # custom modules
-#from panel import PanelsWidget
 from event_handler import KeyHandler
-
-from gui import ConsoleInteractionPanel  
-from gui import ErrorDialog
-from gui import MakeFolderDialog
-from gui import PanelsWidget
-
-from gui import ButtonsBar
-
-from system_api import SystemAPI
-from system_api import KEY
-
-class MainWidget(QWidget):
-    close_app_signal = pyqtSignal(str)
-    def __init__(self):
-        super().__init__()
-        self.widget_1 = PanelsWidget()
-        self.widget_2 = ConsoleInteractionPanel(self)
-        self.widget_3 = ButtonsBar()
-
-        layout = QGridLayout()
-        layout.addWidget(self.widget_1)
-        layout.addWidget(self.widget_2)
-        layout.addWidget(self.widget_3)
-        self.setLayout(layout)
-
-    def update_buttons_text(self,text):
-        self.widget_3.update_buttons_text(text)
-
-    def get_focused_panel_path(self):
-        return self.widget_1.get_focused_panel_path()
-
-    def get_focused_file_or_folder(self):
-        return self.widget_1.get_focused_file_or_folder()
-
-    def update_panel(self,focused_panel):
-        self.widget_1.update_panel(focused_panel)
-
-    def show_deletion_dialog(self):
-        focused_path,focused_panel = self.get_focused_panel_path()
-        focused_file_or_folder = self.get_focused_file_or_folder()
-        filename = SystemAPI.basename(focused_file_or_folder)
-        reply = QMessageBox.question(self, 
-                'Deletion Confirmation', 
-                f'Are you sure you want to delete {filename}?',
-                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, 
-                QMessageBox.StandardButton.Yes
-        )
-        if reply == QMessageBox.StandardButton.Yes: 
-            SystemAPI.remove_file_or_directory(focused_file_or_folder)
-            self.update_panel(focused_panel)
-
-    def show_input_dialog(self):
-        focused_path,focused_panel = self.get_focused_panel_path()
-
-        dialog = MakeFolderDialog(self)  
-        dialog.exec()  
-        
-        # TODO:
-        # add multiple_spaces check
-        # add check for space in the beginnig
-        if dialog.user_input not in ["",None]:
-            print(f'user input: {dialog.user_input}')
-            result = SystemAPI.make_directory(focused_path,dialog.user_input)
-            if result != None:
-                ErrorDialog(self,result)
-                return
-            self.update_panel(focused_panel)
-
-    def closeEvent(self,event):
-        self.close_app_signal.emit("")
-        event.ignore()
+from gui import MainWidget
+from gui import TextEditorWidget
+from system_api.api import SystemAPI
 
 class MainWindow(QMainWindow):
     def __init__(self):        
         super().__init__()
         self.setWindowTitle("My App")
 
+        self.stacked_widget = QStackedWidget()
+
         width = 500
         height = 500
         self.setMinimumWidth(width)
         self.setMinimumHeight(height)
         self.mainWidget = MainWidget()
+        self.textWidget = TextEditorWidget()
         self.mainWidget.close_app_signal.connect(self.closeEventFromWidget)
-        self.setCentralWidget(self.mainWidget)
+
+        self.stacked_widget.addWidget(self.mainWidget)
+        self.stacked_widget.addWidget(self.textWidget)
+        self.setCentralWidget(self.stacked_widget)
+
+
+    def currentWidget(self):
+        return self.stacked_widget.currentWidget()
+
+    def setCurrentWidget(self,widget):
+        self.stacked_widget.setCurrentWidget(widget)
 
     def keyPressEvent(self,event):
-        #KeyHandler.handle_key_press(event)(self)
-        KeyHandler.handle_key_press(event)(self.mainWidget)
+        # temporary workaround to open TextEditorWidget
+        from system_api import KEY
+        if isinstance(self.currentWidget(),MainWidget):
+            if event.key() == KEY.F4:
+                filepath = self.mainWidget.get_focused_file_or_folder()
+                try:
+                    self.textWidget.open_file_temp(filepath)
+                    self.setCurrentWidget(self.textWidget)
+                    #self.setCentralWidget(self.textWidget)
+                except ValueError as e:
+                    print(e)
+        elif isinstance(self.currentWidget(),TextEditorWidget):
+            if event.key() == KEY.F4:
+                self.setCurrentWidget(self.mainWidget)
+                #self.setCentralWidget(self.mainWidget)                
+        KeyHandler.handle_key_press(event,self.currentWidget())(self.currentWidget())
 
     def keyReleaseEvent(self,event):
-        #KeyHandler.handle_key_release(event)(self)
-        KeyHandler.handle_key_release(event)(self.mainWidget)
+        KeyHandler.handle_key_release(event,self.currentWidget())(self.currentWidget())
 
     def closeEventFromWidget(self,event):
         self.close()

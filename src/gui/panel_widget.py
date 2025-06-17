@@ -54,18 +54,16 @@ class PanelsWidget(QWidget):
             self.last_focused_panel = "right panel"
             return (self.right_panel.path,"right panel")
 
-    def update_label_path(self,emitted_panel_name):
-        """ called when one of the panels changes directory and emits signal"""
-        if (emitted_panel_name == "left panel"):
-            path = self.shorten_path(self.left_panel.path)
-            self.left_panel_path_label.setText(path)
-            self.left_panel_path_label.highlight()
-            self.right_panel_path_label.unhighlight()
-        if (emitted_panel_name == "right panel"):
-            path = self.shorten_path(self.right_panel.path)
-            self.right_panel_path_label.setText(path)
-            self.right_panel_path_label.highlight()
-            self.left_panel_path_label.unhighlight()
+    def update_label_path(self, emitted_panel_name):
+        highlight_emitted_panel_name = {
+            "left panel": (self.left_panel.path, self.left_panel_path_label, self.right_panel_path_label),
+            "right panel": (self.right_panel.path, self.right_panel_path_label, self.left_panel_path_label)
+        }
+        if emitted_panel_name in highlight_emitted_panel_name:
+            path,label, other_label = highlight_emitted_panel_name[emitted_panel_name]
+            label.setText(self.shorten_path(path))
+            label.highlight()
+            other_label.unhighlight()
        
     def _init_panels(self):
         layout = QGridLayout()
