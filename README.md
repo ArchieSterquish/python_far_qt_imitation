@@ -5,7 +5,7 @@ Two-panel file manager clone written in python. Doing for myself as small projec
   Panels:
   - [x] Add highlighting for folders/files
     - [x] Add option to configure color for different set of files (partially done needs another dialog window to configure it)
-  - [ ] Add ability to select multiple files
+  - [ ] Add ability to select multiple files  
   - [ ] (AFTER SELECTION IMPLEMENTATION): Add info at the bottom of the a panel
     - [ ] Current files usage space
     - [ ] Selected file count
@@ -24,6 +24,7 @@ Two-panel file manager clone written in python. Doing for myself as small projec
   - [x] Add buttons cheat sheet bar at the bottom
   - [ ] Add current time on right panel path label
   - [ ] (AFTER CTRL KEY EVENTS IMPLEMENTATION) Add character representing what sort is currently in use
+  - [ ] Make panel hide current selected item if it loses focus
 
   Buttons bar cheat sheet:
   - [ ] Add ability to hide buttons bar py pressing Ctrl+B
