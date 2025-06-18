@@ -24,16 +24,19 @@ Two-panel file manager clone written in python. Doing for myself as small projec
   - [x] Add buttons cheat sheet bar at the bottom
   - [ ] Add current time on right panel path label
   - [ ] (AFTER CTRL KEY EVENTS IMPLEMENTATION) Add character representing what sort is currently in use
+
   Buttons bar cheat sheet:
   - [ ] Add ability to hide buttons bar py pressing Ctrl+B
   - [ ] Add buttons functionality when clicking
+  
   Text editor:  
   - [ ] Add information about editor in some sort of bar with following information:
     - [ ] Name of opened file
     - [ ] Encoding of the file
     - [ ] Current cursor position in file like line number and column number
     - [ ] Character code (like for 0-9 codes are 48-57)
-    - [ ] Current time 
+    - [ ] Current time
+           
   Some plugins implementation:
   - [ ] NameEditor:
     - [ ] Add ability to bulk rename files by using template
@@ -43,4 +46,3 @@ Two-panel file manager clone written in python. Doing for myself as small projec
 # FIX:
   Text editor:
   - [ ] - Editor still remembers opened file and if trying to open another and caughting an exception you'd open last opened file
-
