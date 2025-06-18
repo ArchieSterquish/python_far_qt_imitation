@@ -1,4 +1,5 @@
 {
+  "background": null,
   "columns": [
     {
       "cards": [
@@ -7,18 +8,21 @@
           "name": "Add ability to select multiple files",
           "tags": [
             {
-              "text": "#Panel",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "tymb8oemmdwglgpu8afjov8l"
+              "id": "tymb8oemmdwglgpu8afjov8l",
+              "text": "#Panel"
             }
           ]
         },
         {
+          "description": "<p></p>",
           "id": "u6rcx9dctszi00j7du3kazez",
           "name": "Add info at the bottom of the panel",
-          "description": "<p></p>",
+          "tags": [
+            {
+              "id": "tymb8oemmdwglgpu8afjov8l",
+              "text": "#Panel"
+            }
+          ],
           "tasks": [
             {
               "finished": false,
@@ -35,20 +39,17 @@
               "id": "vkxp4ziq3lvqtgxasgweow9w",
               "name": "Selected folder count"
             }
-          ],
-          "tags": [
-            {
-              "text": "#Panel",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "tymb8oemmdwglgpu8afjov8l"
-            }
           ]
         },
         {
           "id": "hrdxbu2rzwidvgz8vn0jw375",
           "name": "Add info at the bottom of the panel for selected files/folders",
+          "tags": [
+            {
+              "id": "tymb8oemmdwglgpu8afjov8l",
+              "text": "#Panel"
+            }
+          ],
           "tasks": [
             {
               "finished": false,
@@ -65,15 +66,6 @@
               "id": "y7houe4b9ranwuyvdx2jiqm7",
               "name": "Selected folder count"
             }
-          ],
-          "tags": [
-            {
-              "text": "#Panel",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "tymb8oemmdwglgpu8afjov8l"
-            }
           ]
         },
         {
@@ -81,17 +73,20 @@
           "name": "Add ability to hide one or both panels with Ctrl+O or Ctrl+P shortcut",
           "tags": [
             {
-              "text": "#Panel",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "tymb8oemmdwglgpu8afjov8l"
+              "id": "tymb8oemmdwglgpu8afjov8l",
+              "text": "#Panel"
             }
           ]
         },
         {
           "id": "ec6l6gqfpa3t0xl424f2ie22",
           "name": "Add info about current file/folder",
+          "tags": [
+            {
+              "id": "tymb8oemmdwglgpu8afjov8l",
+              "text": "#Panel"
+            }
+          ],
           "tasks": [
             {
               "finished": false,
@@ -108,15 +103,6 @@
               "id": "e5fozox3kfw3enmtayccu5h6",
               "name": "Creation data in format: 01-12-1970 13:00"
             }
-          ],
-          "tags": [
-            {
-              "text": "#Panel",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "tymb8oemmdwglgpu8afjov8l"
-            }
           ]
         },
         {
@@ -124,52 +110,40 @@
           "name": "Add ability to quickly jump to folder/file by using Alt+<Any characacter>",
           "tags": [
             {
-              "text": "#Panel",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "tymb8oemmdwglgpu8afjov8l"
+              "id": "tymb8oemmdwglgpu8afjov8l",
+              "text": "#Panel"
             }
           ]
         },
         {
+          "description": "<p>Like by name, extension, date etc</p>",
           "id": "ztaixk5hq96n7i9hb5y57vyd",
           "name": "Add character  at the top of the panel showing what sort is currently in use",
           "tags": [
             {
-              "text": "#Panel",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "tymb8oemmdwglgpu8afjov8l"
+              "id": "tymb8oemmdwglgpu8afjov8l",
+              "text": "#Panel"
             }
-          ],
-          "description": "<p>Like by name, extension, date etc</p>"
+          ]
         },
         {
+          "description": "<p>Currently after switching the panel that lost focus still has some indication of lost focus. Like if I have switched panel while my cursor was on “foo“ folder then it’d still be highlighted. </p>",
           "id": "mr29ktj67quj7uarp1lyzfrf",
           "name": "Make panel hide current selected item if it loses focus",
           "tags": [
             {
-              "text": "#Panel",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "tymb8oemmdwglgpu8afjov8l"
+              "id": "tymb8oemmdwglgpu8afjov8l",
+              "text": "#Panel"
             }
-          ],
-          "description": "<p>Currently after switching the panel that lost focus still has some indication of lost focus. Like if I have switched panel while my cursor was on “foo“ folder then it’d still be highlighted. </p>"
+          ]
         },
         {
           "id": "xewskb7jlm56w5kpgnt3n2kx",
           "name": "Add ability to hide buttons bar py pressing Ctrl+B",
           "tags": [
             {
-              "text": "#ButtonsBar",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "d8ly060m46a04pv39lhnoizb"
+              "id": "d8ly060m46a04pv39lhnoizb",
+              "text": "#ButtonsBar"
             }
           ]
         },
@@ -178,30 +152,24 @@
           "name": "Add buttons functionality when clicking with mouse",
           "tags": [
             {
-              "text": "#ButtonsBar",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "d8ly060m46a04pv39lhnoizb"
+              "id": "d8ly060m46a04pv39lhnoizb",
+              "text": "#ButtonsBar"
             }
           ]
         },
         {
+          "description": "",
           "id": "i2xlye48ub1wxnndk03mpyl3",
           "name": "Add information about editor in some sort of bar with following information",
           "tags": [
             {
-              "text": "#TextEditor",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "o83tutfpwje3t6mjc184i2fn"
+              "id": "o83tutfpwje3t6mjc184i2fn",
+              "text": "#TextEditor"
             }
           ],
-          "description": "",
           "tasks": [
             {
-              "finished": false,
+              "finished": true,
               "id": "xrtum5vreu2uwt1awma3vwjr",
               "name": "Name of opened file"
             },
@@ -211,7 +179,7 @@
               "name": "Encoding of the file"
             },
             {
-              "finished": false,
+              "finished": true,
               "id": "idsznwxvms98logc8txc48lf",
               "name": "Current cursor position in file like line number and column number"
             },
@@ -232,11 +200,8 @@
           "name": "NameEditor",
           "tags": [
             {
-              "text": "#Plugins",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "pt9a5llmlkk8g7hrkqfb1j9n"
+              "id": "pt9a5llmlkk8g7hrkqfb1j9n",
+              "text": "#Plugins"
             }
           ],
           "tasks": [
@@ -253,43 +218,37 @@
           ]
         },
         {
+          "description": "<p></p>",
           "id": "tov3dppm21fxhrrhidm39y01",
           "name": "Audio music player",
-          "description": "<p></p>",
+          "tags": [
+            {
+              "id": "pt9a5llmlkk8g7hrkqfb1j9n",
+              "text": "#Plugins"
+            }
+          ],
           "tasks": [
             {
               "finished": false,
               "id": "wxja16a731zfyr994x0hngn2",
               "name": "Add play any music in app itself when clicking on audio file"
             }
-          ],
-          "tags": [
-            {
-              "text": "#Plugins",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "pt9a5llmlkk8g7hrkqfb1j9n"
-            }
           ]
         },
         {
           "id": "uso4hgea6pkla5wtepldi9ta",
           "name": "Add custom highlight to folders/files",
+          "tags": [
+            {
+              "id": "tymb8oemmdwglgpu8afjov8l",
+              "text": "#Panel"
+            }
+          ],
           "tasks": [
             {
               "finished": false,
               "id": "n40uemuufk1r3qbz36k1y33e",
               "name": "Add option to configure color for different set of files"
-            }
-          ],
-          "tags": [
-            {
-              "text": "#Panel",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "tymb8oemmdwglgpu8afjov8l"
             }
           ]
         }
@@ -300,25 +259,19 @@
     {
       "cards": [
         {
+          "description": "<p>Editor still remembers opened file and if trying to open another and caughting an exception you'd open last opened file</p>",
           "id": "bk0gguozj1i3oz0ya2yen6qo",
           "name": "TextEditor - opening another file bug",
           "tags": [
             {
-              "text": "#TextEditor",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "o83tutfpwje3t6mjc184i2fn"
+              "id": "o83tutfpwje3t6mjc184i2fn",
+              "text": "#TextEditor"
             },
             {
-              "text": "#FIXME",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "pdz9lp39kgg4wn5fhgpa3t7j"
+              "id": "pdz9lp39kgg4wn5fhgpa3t7j",
+              "text": "#FIXME"
             }
-          ],
-          "description": "<p>Editor still remembers opened file and if trying to open another and caughting an exception you'd open last opened file</p>"
+          ]
         }
       ],
       "id": "orj92p54oh6h89prinllhy0e",
@@ -331,11 +284,8 @@
           "name": "Add buttons cheat sheet bar at the bottom",
           "tags": [
             {
-              "text": "#ButtonsBar",
-              "tiClasses": [
-                "ti-valid"
-              ],
-              "id": "d8ly060m46a04pv39lhnoizb"
+              "id": "d8ly060m46a04pv39lhnoizb",
+              "text": "#ButtonsBar"
             }
           ]
         }
@@ -344,49 +294,29 @@
       "title": "Done"
     }
   ],
-  "id": "l1z50v68wkmjzouyb7hhr4rn",
-  "lastEdited": "2025-06-18T20:01:54.293Z",
-  "title": "python far manager pyqt",
   "globalTags": [
     {
-      "text": "#Panel",
-      "tiClasses": [
-        "ti-valid"
-      ],
-      "id": "tymb8oemmdwglgpu8afjov8l"
+      "id": "tymb8oemmdwglgpu8afjov8l",
+      "text": "#Panel"
     },
     {
-      "text": "#ButtonsBar",
-      "tiClasses": [
-        "ti-valid"
-      ],
-      "id": "d8ly060m46a04pv39lhnoizb"
+      "id": "d8ly060m46a04pv39lhnoizb",
+      "text": "#ButtonsBar"
     },
     {
-      "text": "#TextEditor",
-      "tiClasses": [
-        "ti-valid"
-      ],
-      "id": "o83tutfpwje3t6mjc184i2fn"
+      "id": "o83tutfpwje3t6mjc184i2fn",
+      "text": "#TextEditor"
     },
     {
-      "text": "#Plugins",
-      "tiClasses": [
-        "ti-valid"
-      ],
-      "id": "pt9a5llmlkk8g7hrkqfb1j9n"
+      "id": "pt9a5llmlkk8g7hrkqfb1j9n",
+      "text": "#Plugins"
     },
     {
-      "text": "#FIXME",
-      "tiClasses": [
-        "ti-valid"
-      ],
-      "id": "pdz9lp39kgg4wn5fhgpa3t7j"
+      "id": "pdz9lp39kgg4wn5fhgpa3t7j",
+      "text": "#FIXME"
     }
   ],
-  "background": {
-    "blur": "8px",
-    "brightness": "100%",
-    "src": "C:\\Users\\nompo\\Desktop\\1335_ART_PICTURE.jpg"
-  }
+  "id": "l1z50v68wkmjzouyb7hhr4rn",
+  "lastEdited": "2025-06-18T23:42:51.604Z",
+  "title": "python far manager pyqt"
 }

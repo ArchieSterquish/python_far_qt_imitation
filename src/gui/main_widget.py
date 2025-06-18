@@ -36,7 +36,7 @@ class MainWidget(QWidget):
         self.widget_1.update_panel(focused_panel)
 
     def show_deletion_dialog(self):
-        focused_path,focused_panel = self.get_focused_panel_path()
+        _,focused_panel = self.get_focused_panel_path()
         focused_file_or_folder = self.get_focused_file_or_folder()
         filename = SystemAPI.basename(focused_file_or_folder)
         reply = QMessageBox.question(self, 
@@ -69,4 +69,3 @@ class MainWidget(QWidget):
     def closeEvent(self,event):
         self.close_app_signal.emit("")
         event.ignore()
-

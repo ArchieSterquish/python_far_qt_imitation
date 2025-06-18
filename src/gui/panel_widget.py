@@ -1,7 +1,4 @@
-from PyQt6.QtWidgets import(
-    QWidget,
-    QGridLayout,
-)
+from PyQt6.QtWidgets import(QWidget,QGridLayout,)
 import os
 from system_api import SystemAPI
 
@@ -26,6 +23,7 @@ class PanelsWidget(QWidget):
             path = "..." + path[len(path) - MAX_VISIBLE_PATH_LENGTH:]
         return path
 
+    # TODO: rethink to use last_focused_panel here to determine which panel to update or better store reference to focused panel
     def update_panel(self,panel_name):
         if (panel_name == "left panel"):
             self.left_panel.update()
@@ -60,17 +58,16 @@ class PanelsWidget(QWidget):
        
     def _init_panels(self):
         layout = QGridLayout()
-        # init panels
+
         self.left_panel  = Panel("left panel", LEFT_PANEL_PATH)
         self.right_panel = Panel("right panel", RIGHT_PANEL_PATH)
 
         self.left_panel_path_label = PathLabel(self.left_panel.path,self.palette())
         self.right_panel_path_label = PathLabel(self.right_panel.path,self.palette())
-        # connecting signals for label update
+
         self.left_panel.change_label_signal.connect(self.update_label_path)
         self.right_panel.change_label_signal.connect(self.update_label_path)
         
-        # widgets placement
         layout.addWidget(self.left_panel_path_label, 0, 0)  
         layout.addWidget(self.right_panel_path_label, 0, 1)  
 

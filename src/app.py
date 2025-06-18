@@ -1,9 +1,4 @@
-from PyQt6.QtWidgets import(
-    QApplication, 
-    QMainWindow, 
-    QMessageBox,
-    QStackedWidget,
-)
+from PyQt6.QtWidgets import(QApplication, QMainWindow, QMessageBox,QStackedWidget,)
 import sys
 
 # custom modules
@@ -17,6 +12,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("My App")
         self.setup_ui()
         self.mainWidget.close_app_signal.connect(self.closeEventFromWidget) # exit only available main widget 
+        self.keyHandler = KeyHandler(self)
 
     def setup_ui(self):
         width = 500
@@ -36,26 +32,23 @@ class MainWindow(QMainWindow):
     def setCurrentWidget(self,widget):
         self.stacked_widget.setCurrentWidget(widget)
 
+    def switchWidget(self):
+        widget = self.currentWidget()
+        if isinstance(widget,MainWidget):
+            self.setCurrentWidget(self.textWidget)
+        else:
+            self.setCurrentWidget(self.mainWidget)
+
+    def update_buttons_text(self,modifier_key):
+        self.currentWidget().update_buttons_text(modifier_key)
+
     def keyPressEvent(self,event):
-        # temporary workaround to open TextEditorWidget
-        from system_api import KEY
-        if isinstance(self.currentWidget(),MainWidget):
-            if event.key() == KEY.F4:
-                filepath = self.mainWidget.get_focused_file_or_folder()
-                try:
-                    self.textWidget.open_file_temp(filepath)
-                    self.setCurrentWidget(self.textWidget)
-                except ValueError as e:
-                    print(e)
-        elif isinstance(self.currentWidget(),TextEditorWidget):
-            if event.key() == KEY.F4:
-                self.setCurrentWidget(self.mainWidget)
-        KeyHandler.handle_key_press(event,self.currentWidget())(self.currentWidget())
+        self.keyHandler.handle_key_press(event)
 
     def keyReleaseEvent(self,event):
-        KeyHandler.handle_key_release(event,self.currentWidget())(self.currentWidget())
+        self.keyHandler.handle_key_release(event)
 
-    def closeEventFromWidget(self,event):
+    def closeEventFromWidget(self,_):
         self.close()
 
     def closeEvent(self, event):

@@ -1,7 +1,4 @@
-from PyQt6.QtWidgets import(
-    QListWidget,
-    QListWidgetItem,
-)
+from PyQt6.QtWidgets import(QListWidget,QListWidgetItem,)
 from PyQt6.QtCore import pyqtSignal,Qt
 from system_api import KEY
 from system_api import SystemAPI
@@ -62,7 +59,7 @@ class Panel(QListWidget):
             
             # Use default if no match found
             if color is None:
-                color = COLOR_EXTENSIONS["_default"]
+                color = COLOR_EXTENSIONS["default"]
 
             item.setForeground(color)  
             self.addItem(item)
@@ -110,16 +107,11 @@ class Panel(QListWidget):
 
         # Change Left and Right arrow keys to PageUp and PageDown keys
         if event.key() == Qt.Key.Key_Left:
-            new_event = type(event)(event.type(), 
-                                  Qt.Key.Key_PageUp,
-                                  event.modifiers())
+            new_event = type(event)(event.type(), Qt.Key.Key_PageUp,event.modifiers())
             super().keyPressEvent(new_event)
         elif event.key() == Qt.Key.Key_Right:
-            new_event = type(event)(event.type(),
-                                  Qt.Key.Key_PageDown,
-                                  event.modifiers())
+            new_event = type(event)(event.type(),Qt.Key.Key_PageDown,event.modifiers())
             super().keyPressEvent(new_event)
 
         if (event.key() == KEY.ENTER): 
             self.open_folder()
-
