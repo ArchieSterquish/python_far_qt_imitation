@@ -19,6 +19,8 @@ class MainWidget(QWidget):
         layout.addWidget(self.widget_1)
         layout.addWidget(self.widget_2)
         layout.addWidget(self.widget_3)
+        layout.setContentsMargins(0,0,0,0)
+        layout.setSpacing(0)
         self.setLayout(layout)
 
     def update_buttons_text(self,key):

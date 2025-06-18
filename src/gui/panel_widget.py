@@ -1,16 +1,9 @@
 from PyQt6.QtWidgets import(
-    QListWidget,
-    QListWidgetItem,
     QWidget,
     QGridLayout,
-    QLabel
 )
-from PyQt6.QtCore import pyqtSignal, QObject,Qt
 import os
-import re
-from system_api import KEY
 from system_api import SystemAPI
-from PyQt6.QtGui import QColor, QBrush
 
 from .panel import Panel
 from .panel import PathLabel
@@ -37,7 +30,7 @@ class PanelsWidget(QWidget):
         if (panel_name == "left panel"):
             self.left_panel.update()
         if (panel_name == "right panel"):
-            self.right_path.update()
+            self.right_panel.update()
 
     def get_focused_file_or_folder(self):
         path,focused_panel = self.get_focused_panel_path()
@@ -55,15 +48,15 @@ class PanelsWidget(QWidget):
             return (self.right_panel.path,"right panel")
 
     def update_label_path(self, emitted_panel_name):
-        highlight_emitted_panel_name = {
-            "left panel": (self.left_panel.path, self.left_panel_path_label, self.right_panel_path_label),
-            "right panel": (self.right_panel.path, self.right_panel_path_label, self.left_panel_path_label)
-        }
-        if emitted_panel_name in highlight_emitted_panel_name:
-            path,label, other_label = highlight_emitted_panel_name[emitted_panel_name]
-            label.setText(self.shorten_path(path))
-            label.highlight()
+        change_highlight_focus_panel = lambda path, label,other_label:(
+            label.setText(self.shorten_path(path)),
+            label.highlight(),
             other_label.unhighlight()
+        )
+        if emitted_panel_name == "left panel":
+            change_highlight_focus_panel(self.left_panel.path, self.left_panel_path_label, self.right_panel_path_label)
+        if emitted_panel_name == "right panel":
+            change_highlight_focus_panel(self.right_panel.path, self.right_panel_path_label, self.left_panel_path_label)
        
     def _init_panels(self):
         layout = QGridLayout()
@@ -83,4 +76,6 @@ class PanelsWidget(QWidget):
 
         layout.addWidget(self.left_panel, 1, 0)  
         layout.addWidget(self.right_panel, 1, 1)  
+        layout.setContentsMargins(0,0,0,0)
+        layout.setSpacing(0)
         self.setLayout(layout)

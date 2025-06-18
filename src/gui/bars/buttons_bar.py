@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (QPushButton,QWidget,QGridLayout,QLabel,QSizePolicy)
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, pyqtSignal
 import json
 import os
 
@@ -11,6 +11,7 @@ if os.name == "posix": # LINUX
     TEXT_EDITOR_BUTTONS_CONFIGURATION = os.path.join(os.path.dirname(os.path.realpath(__file__)),'config','text_editor_buttons.json')
 
 class ButtonsBar(QWidget):
+    pressed_button_signal = pyqtSignal()
     def __init__(self,parent_widget_text):
         super().__init__()
         self.load_config_for_buttons(parent_widget_text)
@@ -23,11 +24,10 @@ class ButtonsBar(QWidget):
             BUTTONS_CONFIGURATION = MAIN_BUTTONS_CONFIGURATION
         if parent_widget_text == "text editor":
             BUTTONS_CONFIGURATION = TEXT_EDITOR_BUTTONS_CONFIGURATION
-        else:
-            print("what the fuck bars ???:(")
 
         with open(BUTTONS_CONFIGURATION) as f:
             self.CONFIG_BUTTONS = json.load(f)
+
     def create_numbered_button(self,index,button):
         label = QLabel(self)
         label.setText(str(index+1))
@@ -38,6 +38,8 @@ class ButtonsBar(QWidget):
         layout = QGridLayout()
         layout.addWidget(label,0,0)
         layout.addWidget(button,0,1)
+        layout.setContentsMargins(0,0,0,0)
+        layout.setSpacing(0)
 
         widget = QWidget()
         widget.setLayout(layout)
@@ -53,25 +55,10 @@ class ButtonsBar(QWidget):
             temp_widget = self.create_numbered_button(index,button)
             layout.addWidget(temp_widget,0,index)
 
+        layout.setContentsMargins(0,0,0,0)
+        layout.setVerticalSpacing(0)
         self.setLayout(layout)
 
     def update_buttons_text(self,modifier_key):
         for button,text in zip(self.buttons,self.CONFIG_BUTTONS[modifier_key]):
             button.setText(text)
- 
-    def keyPressEvent(self, event):
-        ALT   = Qt.KeyboardModifier.AltModifier 
-        CTRL  = Qt.KeyboardModifier.ControlModifier
-        SHIFT = Qt.KeyboardModifier.ShiftModifier
-    
-        if event.key() == ALT:
-            self.update_buttons_text("ALT")
-        if event.key() == CTRL:
-            self.update_buttons_text("CTRL")
-        if event.key() == SHIFT:
-            self.update_buttons_text("SHIFT")
-        super().keyPressEvent(event)
-
-    def keyReleaseEvent(self,event):
-        self.update_buttons_text("NONE")
-        super().keyPressEvent(event)

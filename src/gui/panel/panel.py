@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import(
     QListWidget,
     QListWidgetItem,
 )
-from PyQt6.QtCore import pyqtSignal, QObject,Qt
+from PyQt6.QtCore import pyqtSignal,Qt
 from system_api import KEY
 from system_api import SystemAPI
 from .colors import *

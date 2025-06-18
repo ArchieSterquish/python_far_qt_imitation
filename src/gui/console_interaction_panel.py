@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import(
     QLineEdit
 )
-from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt
 from system_api import KEY
 from system_api import SystemAPI
 
