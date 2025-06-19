@@ -1,8 +1,21 @@
-from PyQt6.QtWidgets import(QListWidget,QListWidgetItem,)
-from PyQt6.QtCore import pyqtSignal,Qt
+from PyQt6.QtWidgets import(QListWidget,QListWidgetItem,QLineEdit)
+from PyQt6.QtCore import QEvent, QPoint,pyqtSignal,Qt
+
 from system_api import KEY
 from system_api import SystemAPI
 from .colors import *
+
+# TODO:
+# figure out how to move panel relative to the panel
+class QuickSearchPanelWidget(QLineEdit):
+    def __init__(self):
+        super().__init__()
+        self.setup_ui()
+
+    def setup_ui(self):
+        self.setFixedSize(120,30)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.hide() # initally it's hidden
 
 class Panel(QListWidget):
     change_label_signal = pyqtSignal(str)
@@ -12,10 +25,12 @@ class Panel(QListWidget):
         self.path = path
         self.update()
 
+        ALT = Qt.KeyboardModifier.AltModifier
         self.list_of_appliable_keys = [
             KEY.ENTER,
             KEY.LEFT_ARROW,   
             KEY.RIGHT_ARROW,  
+            ALT
         ]
         self.setCurrentRow(0) 
         self.itemDoubleClicked.connect(self.open_folder)
@@ -23,6 +38,49 @@ class Panel(QListWidget):
         # Hiding scrollbars
         self.verticalScrollBar().setStyleSheet("QScrollBar {width:0px;}")
         self.horizontalScrollBar().setStyleSheet("QScrollBar {height:0px;}")
+
+        # setting quick list search
+        self.quick_search = QuickSearchPanelWidget()
+        self.quick_search.installEventFilter(self) # TODO: read about installEventFilter
+        self.quick_search.textChanged.connect(self.search_items)
+        self.quick_search.returnPressed.connect(self.open_folder)
+
+    def eventFilter(self,obj,event):
+        # hiding quick search if ESC is pressed 
+        if not hasattr(self,'quick_search'):
+            return super().eventFilter(obj,event)
+            
+        if obj == self.quick_search and event.type() == QEvent.Type.KeyPress and event.key() == Qt.Key.Key_Escape:
+            self.quick_search.clear()
+            self.quick_search.hide()
+            self.setFocus()
+            return True
+        return super().eventFilter(obj,event)
+
+    def keyPressEvent(self, event):
+        if event.key() not in self.list_of_appliable_keys:
+            super().keyPressEvent(event)
+
+        if not self.currentItem(): # if no items means we aren't focused or something else
+            return
+        
+        # show_quick_search handling. Adding check if text isn't empty. Otherwise it invokes quick_search without text
+        if event.modifiers() == Qt.KeyboardModifier.AltModifier and event.text().isprintable() and event.text() != '':
+            self.show_quick_search(event.text())
+            return 
+
+        # Change Left and Right arrow keys to PageUp and PageDown keys
+        if event.key() == Qt.Key.Key_Left:
+            new_event = type(event)(event.type(), Qt.Key.Key_PageUp,event.modifiers())
+            super().keyPressEvent(new_event)
+        elif event.key() == Qt.Key.Key_Right:
+            new_event = type(event)(event.type(),Qt.Key.Key_PageDown,event.modifiers())
+            super().keyPressEvent(new_event)
+
+        if (event.key() == KEY.ENTER): 
+
+            self.open_folder()
+
 
     def focusInEvent(self, event):
         self.change_label_signal.emit(self.panel_name)
@@ -91,6 +149,10 @@ class Panel(QListWidget):
         return self.currentItem().text()
 
     def open_folder(self):
+        if self.quick_search.hasFocus():
+            self.quick_search.clear()
+            self.quick_search.hide()
+            self.setFocus()
         temp_path = SystemAPI.join(self.path,self.currentItem().text())
         if SystemAPI.is_file(temp_path):
             SystemAPI.open_file_in_editor(temp_path)
@@ -98,20 +160,36 @@ class Panel(QListWidget):
             self.open_directory(self.currentItem().text())
         pass
 
-    def keyPressEvent(self, event):
-        if event.key() not in self.list_of_appliable_keys:
-            super().keyPressEvent(event)
+    # TODO CHEKK FUNCTIONALITY
+    def show_quick_search(self, initial_char=""):
+        # Position the search box near the current item
+        if self.currentItem():
+            rect = self.visualItemRect(self.currentItem())
+            pos = self.mapToGlobal(rect.topRight())
+        else:
+            pos = self.mapToGlobal(self.rect().topRight())
+        self.quick_search.setText(initial_char)
+        self.quick_search.move(pos)
+        self.quick_search.show()
+        self.quick_search.setFocus()
+    
+    def search_items(self, text):
+        if text == "": # edge case
+            self.quick_search.clear()
+            self.quick_search.hide()
+            self.setFocus()
 
-        if not self.currentItem(): # if no items means we aren't focused or something else
+        if not text:            
             return
+            
+        items = [self.item(i) for i in range(self.count())]
+        
+        for item in items:
+            item_text_lower = item.text().lower()
+            text_lower = text.lower()
+            if item_text_lower.startswith(text_lower):                
+                self.setCurrentItem(item)
+                self.scrollToItem(item)
+                return
 
-        # Change Left and Right arrow keys to PageUp and PageDown keys
-        if event.key() == Qt.Key.Key_Left:
-            new_event = type(event)(event.type(), Qt.Key.Key_PageUp,event.modifiers())
-            super().keyPressEvent(new_event)
-        elif event.key() == Qt.Key.Key_Right:
-            new_event = type(event)(event.type(),Qt.Key.Key_PageDown,event.modifiers())
-            super().keyPressEvent(new_event)
-
-        if (event.key() == KEY.ENTER): 
-            self.open_folder()
+        self.quick_search.setText(text[:-1])

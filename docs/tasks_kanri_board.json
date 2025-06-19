@@ -106,16 +106,6 @@
           ]
         },
         {
-          "id": "ezd589iguvah1a930igkq80d",
-          "name": "Add ability to quickly jump to folder/file by using Alt+<Any characacter>",
-          "tags": [
-            {
-              "id": "tymb8oemmdwglgpu8afjov8l",
-              "text": "#Panel"
-            }
-          ]
-        },
-        {
           "description": "<p>Like by name, extension, date etc</p>",
           "id": "ztaixk5hq96n7i9hb5y57vyd",
           "name": "Add character  at the top of the panel showing what sort is currently in use",
@@ -259,6 +249,22 @@
     {
       "cards": [
         {
+          "id": "ezd589iguvah1a930igkq80d",
+          "name": "Add ability to quickly jump to folder/file by using Alt+<Any characacter>",
+          "tags": [
+            {
+              "id": "tymb8oemmdwglgpu8afjov8l",
+              "text": "#Panel"
+            }
+          ]
+        }
+      ],
+      "id": "ksl4qkj82vhd0uzeybjqilnp",
+      "title": "InProgress"
+    },
+    {
+      "cards": [
+        {
           "description": "<p>Editor still remembers opened file and if trying to open another and caughting an exception you'd open last opened file</p>",
           "id": "bk0gguozj1i3oz0ya2yen6qo",
           "name": "TextEditor - opening another file bug",
@@ -317,6 +323,6 @@
     }
   ],
   "id": "l1z50v68wkmjzouyb7hhr4rn",
-  "lastEdited": "2025-06-18T23:42:51.604Z",
+  "lastEdited": "2025-06-19T22:10:00.000Z",
   "title": "python far manager pyqt"
 }
