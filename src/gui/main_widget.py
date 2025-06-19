@@ -59,7 +59,7 @@ class MainWidget(QWidget):
         # add multiple_spaces check
         # add check for space in the beginnig
         if dialog.user_input not in ["",None]:
-            print(f'user input: {dialog.user_input}')
+            #print(f'user input: {dialog.user_input}')
             result = SystemAPI.make_directory(focused_path,dialog.user_input)
             if result != None:
                 ErrorDialog(self,result)

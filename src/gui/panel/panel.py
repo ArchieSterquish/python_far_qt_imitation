@@ -96,8 +96,9 @@ class Panel(QListWidget):
     def update(self):
         self.clear()
 
-        files_list = SystemAPI.get_ff_list(self.path)
-        directories_list = SystemAPI.get_directories_list(self.path)
+        #files_list = SystemAPI.get_files_list(self.path)
+        #directories_list = SystemAPI.get_directories_list(self.path)
+        files_list,directories_list = SystemAPI.get_files_and_directories_list(self.path)
 
         # FIXME - Move in init_function to know that these fields exists
         self.files_list = files_list

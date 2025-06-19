@@ -5,40 +5,16 @@ import shutil
 HOME_DIRECTORY = '/home/archie' # for debugging purposes
 
 class SystemAPI:
-    def get_files_list(
+    def get_files_and_directories_list(
             path="~/",
             do_sort = True,
             show_hidden = False):
-        all_items = os.listdir(path)
-        return list(os.listdir(path)) # DEBUG OPTION
+        files_list = SystemAPI.get_files_list(path)
+        dirs_list  = SystemAPI.get_directories_list(path)
 
-        directories = []
-        files = []
+        return (files_list,dirs_list)
 
-        if not show_hidden:
-            check_condition = lambda item: os.path.isdir(os.path.join(path,item)) and not item.startswith(".") 
-        else:
-            check_condition = lambda item: os.path.isdir(os.path.join(path,item)) 
-
-        for item in all_items:
-            if check_condition(item): 
-                directories.append(item)
-            else:
-                files.append(item)
-        
-        # to get files in order
-        if do_sort:
-            directories.sort()
-            files.sort()
-
-        if (path == "/"):  # root directory so we don't add .. 
-            list_dir = directories + files
-        else:
-            list_dir = [".."] + directories + files
-
-        return list_dir
-
-    def get_ff_list(
+    def get_files_list(
             path="~/",
             do_sort = True,
             show_hidden = False):
@@ -50,7 +26,7 @@ class SystemAPI:
             files = [item for item in all_items if not os.path.isdir(os.path.join(path, item))]
         
         if do_sort:
-            files.sort()
+            files.sort(key=str.lower)
 
         return files
 
@@ -66,7 +42,7 @@ class SystemAPI:
 
         # to get files in order
         if do_sort:
-            directories.sort()
+            directories.sort(key=str.lower)
 
         if (path != "/"):  # root directory so we don't add .. 
             directories = ['..'] + directories
@@ -112,23 +88,3 @@ class SystemAPI:
 
     def execute_command(command):
         os.system(f"kitty {command}")
-
-class KEY:
-    ENTER        = 16777220
-    LEFT_ARROW   = 16777234
-    RIGHT_ARROW  = 16777236
-    CLOSE_ALT_F4 = 16777251
-
-    F1 = 16777264
-    F2 = 16777265
-    F3 = 16777266
-    F4 = 16777267
-    F5 = 16777268
-    F6 = 16777269
-    F7 = 16777270
-    F8 = 16777271
-    F9 = 16777272
-    F10 = 16777273
-    F11 = 16777274
-    F12 = 16777275
-
