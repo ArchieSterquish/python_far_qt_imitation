@@ -111,6 +111,7 @@ class Panel(QListWidget):
         for f in files_list:
             item = QListWidgetItem(f)
             color = None
+            # TODO: remove for loop and instead get file extension from file and check if dict has that extension 
             for ext in sorted(COLOR_EXTENSIONS.keys(), key=len, reverse=True):
                 if f.lower().endswith(ext.lower()):
                     color = COLOR_EXTENSIONS[ext]
