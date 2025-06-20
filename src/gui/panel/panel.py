@@ -1,21 +1,10 @@
-from PyQt6.QtWidgets import(QListWidget,QListWidgetItem,QLineEdit)
-from PyQt6.QtCore import QEvent, QPoint,pyqtSignal,Qt
+from PyQt6.QtWidgets import(QListWidget,QListWidgetItem)
+from PyQt6.QtCore import QEvent,pyqtSignal,Qt
 
 from system_api import KEY
 from system_api import SystemAPI
 from .colors import *
-
-# TODO:
-# figure out how to move panel relative to the panel
-class QuickSearchPanelWidget(QLineEdit):
-    def __init__(self):
-        super().__init__()
-        self.setup_ui()
-
-    def setup_ui(self):
-        self.setFixedSize(120,30)
-        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
-        self.hide() # initally it's hidden
+from .quick_search_panel_widget import QuickSearchPanelWidget
 
 class Panel(QListWidget):
     change_label_signal = pyqtSignal(str)
@@ -40,10 +29,9 @@ class Panel(QListWidget):
         self.horizontalScrollBar().setStyleSheet("QScrollBar {height:0px;}")
 
         # setting quick list search
-        self.quick_search = QuickSearchPanelWidget()
+        self.quick_search = QuickSearchPanelWidget(self)
         self.quick_search.installEventFilter(self) # TODO: read about installEventFilter
-        self.quick_search.textChanged.connect(self.search_items)
-        self.quick_search.returnPressed.connect(self.open_folder)
+        self.quick_search.textChangedConnect(self.search_items)
 
     def eventFilter(self,obj,event):
         # hiding quick search if ESC is pressed 
@@ -78,9 +66,7 @@ class Panel(QListWidget):
             super().keyPressEvent(new_event)
 
         if (event.key() == KEY.ENTER): 
-
             self.open_folder()
-
 
     def focusInEvent(self, event):
         self.change_label_signal.emit(self.panel_name)
@@ -95,9 +81,6 @@ class Panel(QListWidget):
     # if no items left just use setCurrentRow(0)
     def update(self):
         self.clear()
-
-        #files_list = SystemAPI.get_files_list(self.path)
-        #directories_list = SystemAPI.get_directories_list(self.path)
         files_list,directories_list = SystemAPI.get_files_and_directories_list(self.path)
 
         # FIXME - Move in init_function to know that these fields exists
@@ -136,7 +119,6 @@ class Panel(QListWidget):
             previous_directory = SystemAPI.dirname(self.path) 
             previous_directory_name = SystemAPI.basename(self.path)
             self.path = previous_directory 
-    
         self.update()
         files_list = self.directories_list # bad possible optimization process
 
@@ -155,26 +137,27 @@ class Panel(QListWidget):
             self.quick_search.clear()
             self.quick_search.hide()
             self.setFocus()
+
         temp_path = SystemAPI.join(self.path,self.currentItem().text())
+
         if SystemAPI.is_file(temp_path):
             SystemAPI.open_file_in_editor(temp_path)
         else: 
             self.open_directory(self.currentItem().text())
-        pass
 
     # TODO CHEKK FUNCTIONALITY
     def show_quick_search(self, initial_char=""):
         # Position the search box near the current item
-        if self.currentItem():
-            rect = self.visualItemRect(self.currentItem())
-            pos = self.mapToGlobal(rect.topRight())
-        else:
-            pos = self.mapToGlobal(self.rect().topRight())
+        #rect = self.visualItemRect(self.currentItem())
         self.quick_search.setText(initial_char)
-        self.quick_search.move(pos)
         self.quick_search.show()
+        x = self.width()//2 - self.quick_search.width()
+        y = self.height() - self.quick_search.height()
+        self.quick_search.move(x,y)
         self.quick_search.setFocus()
-    
+
+    # TODO: quick search bug:
+    # if using digits or |? etc characters then it shows the search input empty without those characters which isn't supposed to happen
     def search_items(self, text):
         if text == "": # edge case
             self.quick_search.clear()
