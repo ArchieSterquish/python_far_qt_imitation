@@ -9,8 +9,8 @@ class SystemAPI:
             path="~/",
             do_sort = True,
             show_hidden = False):
-        files_list = SystemAPI.get_files_list(path)
-        dirs_list  = SystemAPI.get_directories_list(path)
+        files_list = SystemAPI.get_files_list(path,do_sort,show_hidden)
+        dirs_list  = SystemAPI.get_directories_list(path,do_sort,show_hidden)
 
         return (files_list,dirs_list)
 

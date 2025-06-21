@@ -6,6 +6,11 @@ from event_handler import KeyHandler
 from gui import MainWidget
 from gui import TextEditorWidget
 
+# TODO:
+#   either find a fix for FIXME in MainWindow
+#   or change so Panel or PanelsWidget gets keyHandler
+#   or redirect keys from Panel or PanelsWidget from corresponding methods
+
 class MainWindow(QMainWindow):
     def __init__(self):        
         super().__init__()
@@ -13,6 +18,7 @@ class MainWindow(QMainWindow):
         self.setup_ui()
         self.mainWidget.close_app_signal.connect(self.closeEventFromWidget) # exit only available main widget 
         self.keyHandler = KeyHandler(self)
+        #self.showMaximized()
 
     def setup_ui(self):
         width = 500
@@ -41,10 +47,14 @@ class MainWindow(QMainWindow):
 
     def update_buttons_text(self,modifier_key):
         self.currentWidget().update_buttons_text(modifier_key)
-
+    
+    # FIXME:
+    # after adding ChangeLocationWidget mainWidget stopped recieving any keys so usual exit doesn't work now
     def keyPressEvent(self,event):
         self.keyHandler.handle_key_press(event)
 
+    # FIXME:
+    # after adding ChangeLocationWidget mainWidget stopped recieving any keys so usual exit doesn't work now
     def keyReleaseEvent(self,event):
         self.keyHandler.handle_key_release(event)
 

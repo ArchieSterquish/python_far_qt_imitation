@@ -1,7 +1,9 @@
 from PyQt6.QtWidgets import(QWidget,QGridLayout,)
+from PyQt6.QtCore import Qt
 import os
-from system_api import SystemAPI
 
+from system_api import KEY
+from system_api import SystemAPI
 from .panel import Panel
 from .panel import PathLabel
 # set with mind that settings are stored in some sort of file
@@ -16,7 +18,7 @@ class PanelsWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.last_focused_panel = "left panel" # for case when panel becomes unfocused 
-        self._init_panels()
+        self.setup_ui()
 
     def shorten_path(self,path):
         if len(path) > MAX_VISIBLE_PATH_LENGTH:
@@ -44,6 +46,23 @@ class PanelsWidget(QWidget):
         if self.right_panel.hasFocus():            
             self.last_focused_panel = "right panel"
             return (self.right_panel.path,"right panel")
+    
+    # FIXME: can't change location in unfocused panel without focusing on it 
+    # How it works in far:
+    #   When left panel is focused and when you try to change right panel location 
+    #   it changes right panel location 
+    #   and when it changes left panel is still left focused
+    # Currently:
+    #   When changing location on unfocused panel after chaning location 
+    #   it switches focus to unfocused panel 
+    #   but it should change focus if user does it using TAB key
+    def keyPressEvent(self,event):
+        # Workaround to change location on unfocused panels
+        # using setFocus breaks the app because it changes focus to another panel but leaving ChangeLocationWidget hang in the QThread but 
+        if event.key() == KEY.F1 and event.modifiers() == Qt.KeyboardModifier.AltModifier and not self.left_panel.hasFocus():
+            self.left_panel.show_change_location()
+        elif event.key() == KEY.F2 and event.modifiers() == Qt.KeyboardModifier.AltModifier and not self.right_panel.hasFocus():
+            self.right_panel.show_change_location()
 
     def update_label_path(self, emitted_panel_name):
         change_highlight_focus_panel = lambda path, label,other_label:(
@@ -56,7 +75,7 @@ class PanelsWidget(QWidget):
         if emitted_panel_name == "right panel":
             change_highlight_focus_panel(self.right_panel.path, self.right_panel_path_label, self.left_panel_path_label)
        
-    def _init_panels(self):
+    def setup_ui(self):
         layout = QGridLayout()
 
         self.left_panel  = Panel("left panel", LEFT_PANEL_PATH)

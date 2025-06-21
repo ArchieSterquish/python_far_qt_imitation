@@ -20,7 +20,6 @@ class QuickSearchPanelWidget(QWidget):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.hide()
 
-
         self.setAutoFillBackground(True) 
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground,True) # initially widget doesn't have background color at all
 

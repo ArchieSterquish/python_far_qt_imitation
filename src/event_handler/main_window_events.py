@@ -32,8 +32,8 @@ commands_pressed = {
     KEY.F11:          lambda window: print('not implemented: plugins'), # do I need them?
     KEY.F12:          lambda window: print('not implemented: screens'), # I don't use them myself, so hard to say
 
-    (ALT,KEY.F1):       lambda window: print('not implemented: change left panel path '),
-    (ALT,KEY.F2):       lambda window: print('not implemented: change right panel path'),
+    #(ALT,KEY.F1):       lambda window: print('not implemented: change left panel path '),
+    #(ALT,KEY.F2):       lambda window: print('not implemented: change right panel path'),
     (ALT,KEY.F3):       lambda window: print('not implemented: view (why does Far have same function key)'),
     (ALT,KEY.F4):       lambda window: print('not implemented: edit... (difference?)'),
     (ALT,KEY.F5):       lambda window: print('not implemented: Print (umm I doubt it applies to printers though)'),
