@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import(QListWidget,QListWidgetItem)
 from PyQt6.QtCore import QEvent,pyqtSignal,Qt
+import re
 
 from system_api import KEY
 from system_api import SystemAPI
@@ -12,8 +13,10 @@ class Panel(QListWidget):
         super().__init__()
         self.panel_name = panel_name
         self.path = path
-        self.update()
+        self.files_list = None
+        self.directories_list = None
 
+        self.update()
         ALT = Qt.KeyboardModifier.AltModifier
         self.list_of_appliable_keys = [
             KEY.ENTER,
@@ -37,7 +40,7 @@ class Panel(QListWidget):
         # hiding quick search if ESC is pressed 
         if not hasattr(self,'quick_search'):
             return super().eventFilter(obj,event)
-            
+        # initiate quick search
         if obj == self.quick_search and event.type() == QEvent.Type.KeyPress and event.key() == Qt.Key.Key_Escape:
             self.quick_search.clear()
             self.quick_search.hide()
@@ -48,7 +51,7 @@ class Panel(QListWidget):
     def keyPressEvent(self, event):
         if event.key() not in self.list_of_appliable_keys:
             super().keyPressEvent(event)
-
+        # in case we're not focused
         if not self.currentItem(): # if no items means we aren't focused or something else
             return
         
@@ -82,8 +85,6 @@ class Panel(QListWidget):
     def update(self):
         self.clear()
         files_list,directories_list = SystemAPI.get_files_and_directories_list(self.path)
-
-        # FIXME - Move in init_function to know that these fields exists
         self.files_list = files_list
         self.directories_list = directories_list 
 
@@ -91,16 +92,17 @@ class Panel(QListWidget):
             item = QListWidgetItem(d)
             item.setForeground(COLOR_EXTENSIONS["folder"])  
             self.addItem(item)
+
         for f in files_list:
             item = QListWidgetItem(f)
             color = None
-            # TODO: remove for loop and instead get file extension from file and check if dict has that extension 
-            for ext in sorted(COLOR_EXTENSIONS.keys(), key=len, reverse=True):
-                if f.lower().endswith(ext.lower()):
-                    color = COLOR_EXTENSIONS[ext]
-                    break
             
-            # Use default if no match found
+            extension = re.search(r"\.[a-zA-Z0-9]*$",f)
+            if extension != None:
+                extension = extension.group().lower() 
+            if extension in COLOR_EXTENSIONS.keys():
+                color = COLOR_EXTENSIONS[extension]
+
             if color is None:
                 color = COLOR_EXTENSIONS["default"]
 
@@ -145,10 +147,7 @@ class Panel(QListWidget):
         else: 
             self.open_directory(self.currentItem().text())
 
-    # TODO CHEKK FUNCTIONALITY
     def show_quick_search(self, initial_char=""):
-        # Position the search box near the current item
-        #rect = self.visualItemRect(self.currentItem())
         self.quick_search.setText(initial_char)
         self.quick_search.show()
         x = self.width()//2 - self.quick_search.width()
