@@ -63,6 +63,7 @@ class PanelsWidget(QWidget):
             self.left_panel.show_change_location()
         elif event.key() == KEY.F2 and event.modifiers() == Qt.KeyboardModifier.AltModifier and not self.right_panel.hasFocus():
             self.right_panel.show_change_location()
+        super().keyPressEvent(event) # to allow app.py use it's bindings
 
     def update_label_path(self, emitted_panel_name):
         change_highlight_focus_panel = lambda path, label,other_label:(
