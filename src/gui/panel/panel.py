@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import(QListWidget,QListWidgetItem)
-from PyQt6.QtCore import QEvent,pyqtSignal,Qt
+from PyQt6.QtCore import QEvent,pyqtSignal,Qt,QModelIndex
 import re
 
 from system_api import KEY
@@ -17,6 +17,8 @@ class Panel(QListWidget):
     change_label_signal = pyqtSignal(str)
     def __init__(self,panel_name,path):
         super().__init__()
+        self.setCurrentRow(0) 
+        self.currently_used_item_index = 0
 
         self.panel_name = panel_name
         self.path = path
@@ -24,7 +26,10 @@ class Panel(QListWidget):
         self.directories_list = None
 
         self.update()
-        self.setCurrentRow(0) 
+
+        if self.panel_name != "left panel":
+            self.setCurrentRow(-1)  # to hide selection from right panel otherwise 2 panels will have selected item
+
         self.itemDoubleClicked.connect(self.open_folder)
 
         # Hiding scrollbars
@@ -33,7 +38,7 @@ class Panel(QListWidget):
 
         # setting quick list search
         self.quick_search = QuickSearchPanelWidget(self)
-        self.quick_search.installEventFilter(self) # TODO: read about installEventFilter
+        self.quick_search.installEventFilter(self) 
         self.quick_search.textChangedConnect(self.search_items)
 
         self.change_location = ChangeLocationWidget(self)
@@ -51,10 +56,10 @@ class Panel(QListWidget):
         ]
 
     def eventFilter(self,obj,event):
-        if not hasattr(self,'quick_search'):
-            return super().eventFilter(obj,event)
+        if not hasattr(self,'quick_search'):        # workaround to fix issue not finding self.quick_search though it's initialized in __init__
+            return super().eventFilter(obj,event)   # why it doesn't see it though?
 
-        # hiding quick search if ESC is pressed 
+        # hiding quick_search widget if ESC is pressed 
         if obj == self.quick_search and event.type() == QEvent.Type.KeyPress and event.key() == Qt.Key.Key_Escape:
             self.quick_search.clear()
             self.quick_search.hide()
@@ -66,43 +71,38 @@ class Panel(QListWidget):
             self.setFocus()
             return True
 
-        #if obj == self.change_location and event.type() == QEvent.Type.FocusOut:
-        #    self.change_location.hide()
-        #    self.setFocus()
-
         return super().eventFilter(obj,event)
 
     def keyPressEvent(self, event):
         if event.key() not in self.list_of_appliable_keys:
             super().keyPressEvent(event)
-        # in case we're not focused
+        # In case we're not focused
         if not self.currentItem(): # if no items means we aren't focused or something else
             return
-
+        # Showing show_change_location widget if Alt+F1 or Alt+F2 is pressed depending on panel name
         if event.key() == self.change_location_key and event.modifiers() == Qt.KeyboardModifier.AltModifier: 
             self.show_change_location()
-
-        # show_quick_search handling. Adding check if text isn't empty. Otherwise it invokes quick_search without text
+        # Showing show_quick_search widget if Alt+character is pressed and not whitespace character 
         if event.modifiers() == Qt.KeyboardModifier.AltModifier and event.text().isprintable() and event.text() != '':
             self.show_quick_search(event.text())
-
         # Change Left and Right arrow keys to PageUp and PageDown keys
         if event.key() == Qt.Key.Key_Left:
-            new_event = type(event)(event.type(), Qt.Key.Key_PageUp,event.modifiers())
-            super().keyPressEvent(new_event)
+            super().keyPressEvent(type(event)(event.type(), Qt.Key.Key_PageUp,event.modifiers()))
         if event.key() == Qt.Key.Key_Right:
-            new_event = type(event)(event.type(),Qt.Key.Key_PageDown,event.modifiers())
-            super().keyPressEvent(new_event)
-
+            super().keyPressEvent(type(event)(event.type(),Qt.Key.Key_PageDown,event.modifiers()))
+        # Opening new folder if ENTER is pressed (Yeah yeah you get it ... :|)
         if (event.key() == KEY.ENTER): 
             self.open_folder()
 
     def focusInEvent(self, event):
-        self.change_label_signal.emit(self.panel_name)
+        self.change_label_signal.emit(self.panel_name)       
+        self.setCurrentRow(self.currently_used_item_index)  # restoring last current position
         super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         self.change_label_signal.emit(self.panel_name)
+        self.currently_used_item_index = self.currentRow()  # remembering current position to restore it
+        self.setCurrentRow(-1)                              # to lose focus on QListWidget
         super().focusOutEvent(event)
 
     # TODO:
@@ -159,14 +159,8 @@ class Panel(QListWidget):
         self.update()
         files_list = self.directories_list # bad possible optimization process
 
-        if previous_directory_name != None: # meaning we're going backwards            
-            if previous_directory_name in files_list:
-                last_position = files_list.index(previous_directory_name)
-            else: 
-                last_position = 0
-            self.setCurrentRow(last_position)
-        else:
-            self.setCurrentRow(0) # to avoid case when opening new directory it instantly loses focus on list elements
+        last_position = 0 if previous_directory_name not in files_list else files_list.index(previous_directory_name)
+        self.setCurrentRow(last_position)
         self.change_label_signal.emit(self.panel_name)
 
     def get_current_file_or_folder(self):

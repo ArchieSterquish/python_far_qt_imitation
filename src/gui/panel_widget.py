@@ -75,7 +75,6 @@ class PanelsWidget(QWidget):
             change_highlight_focus_panel(self.left_panel.path, self.left_panel_path_label, self.right_panel_path_label)
         if emitted_panel_name == "right panel":
             change_highlight_focus_panel(self.right_panel.path, self.right_panel_path_label, self.left_panel_path_label)
-       
     def setup_ui(self):
         layout = QGridLayout()
 

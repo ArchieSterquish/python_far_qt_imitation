@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import(QApplication, QMainWindow, QMessageBox,QStackedWidget,)
+from PyQt6.QtWidgets import(QApplication, QMainWindow, QMessageBox,QStackedWidget)
 import sys
 import os
 
