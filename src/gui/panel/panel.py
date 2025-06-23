@@ -100,8 +100,10 @@ class Panel(QListWidget):
         super().focusInEvent(event)
 
     def focusOutEvent(self, event):
-        self.change_label_signal.emit(self.panel_name)
         self.currently_used_item_index = self.currentRow()  # remembering current position to restore it
+        if self.change_location.hasFocus() or self.quick_search.hasFocus():
+            return
+        self.change_label_signal.emit(self.panel_name)
         self.setCurrentRow(-1)                              # to lose focus on QListWidget
         super().focusOutEvent(event)
 
