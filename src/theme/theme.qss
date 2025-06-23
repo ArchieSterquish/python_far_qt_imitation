@@ -1,4 +1,7 @@
-*{font-size: 14pt;}
+*{
+    font-size: 14pt;
+}
+
 QListWidget{
     background-color: #262626;
 }
@@ -8,15 +11,17 @@ QMainWindow{
 Panel {
     selection-background-color: #008080;
 }
+
 PanelsWidget {
     selection-background-color: #008080; 
     selection-color:black;
     background-color:#262626;
-    color:cyan
+    color:cyan;
 }
 PathLabel {
     selection-background-color: #008080; 
     selection-color:black;
+    highlight
     background-color:#262626;
     color:cyan
 }
@@ -60,4 +65,20 @@ QuickSearchPanelWidget QLineEdit{
     background-color: #00ffff;
     color: #000000;
     border-radius: 4px; 
+}
+
+TextInformationBar QLabel{ 
+    background-color: black;
+    color: yellow;
+}
+
+TextInformationBar{ 
+    background-color: black;
+    color: yellow;
+    font-size: 14pt;
+}
+
+TextEditorWidget QTextEdit{
+    background-color: #262626;
+    color: cyan;
 }

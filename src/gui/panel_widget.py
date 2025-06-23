@@ -69,7 +69,7 @@ class PanelsWidget(QWidget):
         change_highlight_focus_panel = lambda path, label,other_label:(
             label.setText(self.shorten_path(path)),
             label.highlight(),
-            other_label.unhighlight()
+            other_label.unhighlight(),
         )
         if emitted_panel_name == "left panel":
             change_highlight_focus_panel(self.left_panel.path, self.left_panel_path_label, self.right_panel_path_label)

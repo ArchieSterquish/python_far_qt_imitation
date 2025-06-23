@@ -82,7 +82,9 @@ def main():
     with open(path_to_theme,"r") as f:
         style_sheet = f.read()
     app.setStyleSheet(style_sheet)
+    
     window = MainWindow()
+
     window.show()
     app.exec()
 

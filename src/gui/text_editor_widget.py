@@ -33,6 +33,7 @@ class TextEditorWidget(QWidget):
         layout.addWidget(self.text_edit)
         layout.addWidget(self.buttons_bar)
         layout.setContentsMargins(0,0,0,0)
+        layout.setSpacing(0)
         self.setLayout(layout)
 
         self.text_edit.cursorPositionChanged.connect(self.update_position_info)

@@ -20,4 +20,9 @@ class TextInformationBar(QWidget):
         self.position_label.setAlignment(Qt.AlignmentFlag.AlignRight)
         layout.addWidget(self.filepath_label)
         layout.addWidget(self.position_label)
+
+        layout.setContentsMargins(0,0,0,0)
+        layout.setSpacing(0)
+
         self.setLayout(layout)
+

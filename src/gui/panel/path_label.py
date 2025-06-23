@@ -1,10 +1,15 @@
 from PyQt6.QtWidgets import QLabel
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPalette,QColor
 
 class PathLabel(QLabel):
     def __init__(self,text,palette):
         super().__init__(text)
-        self.palette = palette
+        self.palette = QPalette()
+        self.palette.setColor(QPalette.ColorRole.WindowText, QColor("cyan"))
+        self.palette.setColor(QPalette.ColorRole.Highlight, QColor("#008080"))
+        self.palette.setColor(QPalette.ColorRole.HighlightedText, QColor("black"))
+
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
     def apply_style(self,style):
@@ -28,6 +33,6 @@ class PathLabel(QLabel):
     def unhighlight(self):
         self.apply_style({  
             'bg': 'transparent',
-            'text': self.palette.text().color().name(),
+            'text': self.palette.windowText().color().name(),
             'border': 'none'
         })
