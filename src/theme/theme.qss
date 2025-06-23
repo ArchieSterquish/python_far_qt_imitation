@@ -1,0 +1,63 @@
+*{font-size: 14pt;}
+QListWidget{
+    background-color: #262626;
+}
+QMainWindow{
+    background-color: black;
+}
+Panel {
+    selection-background-color: #008080;
+}
+PanelsWidget {
+    selection-background-color: #008080; 
+    selection-color:black;
+    background-color:#262626;
+    color:cyan
+}
+PathLabel {
+    selection-background-color: #008080; 
+    selection-color:black;
+    background-color:#262626;
+    color:cyan
+}
+ConsoleInteractionPanel{
+    background-color:#262626;
+    color:white;
+}
+ButtonsBar QWidget QPushButton{
+    background-color: #008080;
+    color:black;
+}
+ButtonsBar QWidget QLabel{
+    color:white
+}
+
+ChangeLocationWidget {
+    background-color: gray;
+    border-radius: 4px; 
+}
+
+ChangeLocationWidget QLabel{
+    color: #ffffff;
+}
+
+ChangeLocationWidget QListWidget{
+    background-color: #00ffff;
+    color: #000000;
+    border-radius: 4px; 
+}
+
+QuickSearchPanelWidget {
+    background-color: grey;
+    border-radius: 4px; 
+}
+
+QuickSearchPanelWidget QLabel{
+    color: #ffffff;
+}
+
+QuickSearchPanelWidget QLineEdit{
+    background-color: #00ffff;
+    color: #000000;
+    border-radius: 4px; 
+}

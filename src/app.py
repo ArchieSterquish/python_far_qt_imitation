@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import(QApplication, QMainWindow, QMessageBox,QStackedWidget,)
 import sys
+import os
 
 # custom modules
 from event_handler import KeyHandler
@@ -77,7 +78,10 @@ class MainWindow(QMainWindow):
 
 def main():
     app = QApplication(sys.argv)
-    app.setStyle("fusion") # temp dark mode replacement (IT'S ACTUALLY PERMANENT >:D)
+    path_to_theme = os.path.join(os.getcwd(),"theme","theme.qss")
+    with open(path_to_theme,"r") as f:
+        style_sheet = f.read()
+    app.setStyleSheet(style_sheet)
     window = MainWindow()
     window.show()
     app.exec()

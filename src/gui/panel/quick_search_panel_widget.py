@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QWidget,QGridLayout,QLabel,QLineEdit
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt,QEvent
 
 class QuickSearchPanelWidget(QWidget):
     def __init__(self,parent):
@@ -12,6 +12,8 @@ class QuickSearchPanelWidget(QWidget):
         self.search_label = QLabel('Search')
         self.quick_search = QLineEdit()
 
+        self.quick_search.installEventFilter(self)
+
         layout.addWidget(self.search_label)
         layout.addWidget(self.quick_search)
         self.setLayout(layout)
@@ -23,18 +25,12 @@ class QuickSearchPanelWidget(QWidget):
         self.setAutoFillBackground(True) 
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground,True) # initially widget doesn't have background color at all
 
-        self.setStyleSheet("""
-            background-color: gray;
-        """)
+    def eventFilter(self,obj,event):
+        if obj == self.quick_search and event.type() == QEvent.Type.FocusOut:
+            self.hide()
+            return True
 
-        self.quick_search.setStyleSheet("""
-            background-color: #00ffff;
-            color: #000000;
-        """)
-
-        self.search_label.setStyleSheet("""
-            color: #ffffff;
-        """)
+        return super().eventFilter(obj,event)
 
     def textChangedConnect(self,callback):
         self.quick_search.textChanged.connect(callback)

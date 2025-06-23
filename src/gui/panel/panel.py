@@ -6,6 +6,7 @@ from system_api import KEY
 from system_api import SystemAPI
 from .colors import *
 from .quick_search_panel_widget import QuickSearchPanelWidget
+from .change_location_widget import ChangeLocationWidget
 
 # TODO:
 # refactor function names due to confusing naming:
@@ -35,7 +36,6 @@ class Panel(QListWidget):
         self.quick_search.installEventFilter(self) # TODO: read about installEventFilter
         self.quick_search.textChangedConnect(self.search_items)
 
-        from .change_location_widget import ChangeLocationWidget
         self.change_location = ChangeLocationWidget(self)
         self.change_location.installEventFilter(self)
         self.change_location.returnPressed.connect(self.open_by_path)
@@ -66,6 +66,10 @@ class Panel(QListWidget):
             self.setFocus()
             return True
 
+        #if obj == self.change_location and event.type() == QEvent.Type.FocusOut:
+        #    self.change_location.hide()
+        #    self.setFocus()
+
         return super().eventFilter(obj,event)
 
     def keyPressEvent(self, event):
@@ -81,7 +85,6 @@ class Panel(QListWidget):
         # show_quick_search handling. Adding check if text isn't empty. Otherwise it invokes quick_search without text
         if event.modifiers() == Qt.KeyboardModifier.AltModifier and event.text().isprintable() and event.text() != '':
             self.show_quick_search(event.text())
-            return 
 
         # Change Left and Right arrow keys to PageUp and PageDown keys
         if event.key() == Qt.Key.Key_Left:
@@ -183,18 +186,18 @@ class Panel(QListWidget):
             self.open_directory(self.currentItem().text())
 
     def show_change_location(self):
-        self.change_location.show()
         x = self.width()//2 - self.quick_search.width()
         y = self.height()//2 - self.quick_search.height()
         self.change_location.move(x,y)
+        self.change_location.show()
         self.change_location.setFocus()
 
     def show_quick_search(self, initial_char=""):
         self.quick_search.setText(initial_char)
-        self.quick_search.show()
         x = self.width()//2 - self.quick_search.width()
         y = self.height() - self.quick_search.height()
-        self.quick_search.move(x,y)
+        self.quick_search.move(x,y)        
+        self.quick_search.show()
         self.quick_search.setFocus()
 
     # TODO: quick search bug:
